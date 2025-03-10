@@ -18,7 +18,7 @@ class Restaurant(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='restaurants')
     name = models.CharField(max_length=100)
     cuisine = models.CharField(max_length=50)
-    menu = models.TextField(blank=True)  # Simple way to handle menus for now
+    menu = models.TextField(blank=True)
     address = models.CharField(max_length=255)
     email = models.EmailField()
     phone = models.CharField(max_length=15)
@@ -32,7 +32,7 @@ class MenuItem(models.Model):
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, related_name='menu_items')
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True)
-    price = models.DecimalField(max_digits=6, decimal_places=2)
+    price = models.DecimalField(max_digits=5, decimal_places=2)
     TYPE_CHOICES = [
         ('starter', 'Starter'),
         ('main', 'Main Course'),
