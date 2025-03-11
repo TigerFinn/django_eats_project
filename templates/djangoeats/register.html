@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+
+{% load static %}
+
+<html>
+    <head>
+        <title>Register</title>
+    </head>
+    <body>
+        {% if registered %}
+            <p>Thank you for registering</p>
+            <a href="{% url 'djangoeats:home' %}">homepage</a><br />
+        {% else %}
+            <h1>Register here</h1>
+            <form id="user_form" method="post" action="{% url 'djangoeats:register' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                {{ form.as_p }}
+
+                <input type="submit" name="submit" value="Register" />
+            </form>
+        {% endif %}
+    </body>
+</html>

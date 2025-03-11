@@ -1,5 +1,8 @@
 from django.shortcuts import render # type: ignore
 from django.http import HttpResponse # type: ignore
+from djangoeats.forms import ProfileForm
+from djangoeats.models import Profile 
+
 
 
 
@@ -13,8 +16,22 @@ def login(request):
     return HttpResponse("Login here")
 
 def register(request):
-    #register functionality for both users and owners?
-    return HttpResponse("Register here")
+    registered = False 
+    if request.method == 'POST':
+        form = ProfileForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.set_password(user.password)
+            user.save()
+            profile = form.save(commit=False)
+            profile.user = user
+            profile.save()
+        else:
+            print(form.errors)
+    else:
+        form = ProfileForm()
+    return render(request,'djangoeats/register.html',{'form':form, 'registered':registered})
+
 
 def restaurant(request):
     #Load in details about the given restaurant
