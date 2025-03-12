@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+{% extends 'djangoeats/base.html' %}
+{% load staticfiles %}
+
+{% block body_block %}
+    {% block pre_scroll_body_block %}
+    {% endblock %}
+    
+    <!-- Implement a dynamic scroll function for the restaurants -->
+    <img src="{% static 'images/logo.png' %}" width = 200 height = 200>
+    <!-- Anything that extends restaurant scroll base should have a context which is a list of restaurants -->
+    {% for restaurant in restaurants %}
+    <div class = 'restaurant'>
+        <h3>{{restaurant.name}}</h3>
+        <p>{{restaurant.cuisine}}</p>
+        <!-- <p>Figure out how to put the rating here Rating</p> -->
+        <p>{{restaurant.address}}</p>
+    </div>
+    {% endfor %}
+
+    {% block post_scroll_body_block %}
+    {% endblock %}
+{% endblock %}

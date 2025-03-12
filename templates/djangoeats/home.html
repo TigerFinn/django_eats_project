@@ -1,20 +1,15 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>DjangoEats</title>
-    </head>
-    <body>
-        <div id = 'header'>
-            <p>Form the header</p>
-            <a href="{% url 'djangoeats:register' %}">Register Here</a>
-        </div>
-        <h1>DjangoEats</h1>
-        <h2>You're hungry, we've got food</h2>
-        <div class = 'restaurant_list'>
-            <p>Form the list of restaurants</p>
-        </div>
-        <div id = 'search'>
-            <p>Form the search functionality</p>
-        </div>  
-    </body>
-</html>
+{% extends 'djangoeats/restaurantDisplayBase.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+Home
+{% endblock %}
+
+{% block pre_scroll_body_block %}
+<h1>Restaurants</h1>
+{% endblock %}
+
+{% block post_scroll_body_block %}
+<p>I'm going to be a search feature</p> 
+{% endblock %}

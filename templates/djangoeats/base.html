@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+
+<html>
+    <head lang="en">
+        <meta charset = "UTF-8" />
+        <title>
+            DjangoEats -
+            {% block title_block %}
+            {% endblock %}
+        </title>
+    </head>
+    <body>
+        <header>    
+            <a id="hometag" href="">DjangoEats</a>
+            {% if user.is_authenticated %}
+            Welcome {{user.username}}
+            {% if user.user_type == 'owner' %}
+            : Owner
+            {% endif %}
+            <button>Log Out</button>
+            {% else %}
+            <button>Log In</button>
+            <button>Register</button>
+            {% endif %}
+            <img id="header-logo" src="{% static 'images/logo.png' %}" alt="DjangoEats Logo" width = 100, height = 100>
+        </header>
+        <hr/>
+        <main>
+            <div class = 'body'>
+                {% block body_block %}
+                {% endblock %}
+            </div>
+            <div>
+                <p>Thanks for visiting DjangoEats :)</p>
+            </div>
+        </main>
+    </body>
+</html>
