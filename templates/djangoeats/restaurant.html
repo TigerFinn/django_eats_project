@@ -19,7 +19,7 @@
     </div>
     
     {% if user.is_authenticated %}
-        <a href="{% url 'djangoeats:make_review' %}">
+        <a href="{% url 'djangoeats:make_review' restaurant.slug %}">
             <button>Make a Review</button>
         </a>
         <!-- IMPLEMENT FUNCTIONALITY TO ADD THIS restaurant TO THE USERS LIST OF FAVOURITES(IF WE USE A LIST) -->
