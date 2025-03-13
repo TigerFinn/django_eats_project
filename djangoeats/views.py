@@ -1,7 +1,13 @@
 from django.shortcuts import render # type: ignore
 from django.http import HttpResponse # type: ignore
 from djangoeats.forms import ProfileForm
-from djangoeats.models import Profile 
+from djangoeats.models import Profile
+from djangoeats.models import Restaurant
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect
+from django.urls import reverse
+from djangoeats.forms import ReviewForm
+from datetime import datetime
 
 
 
@@ -33,12 +39,52 @@ def register(request):
     return render(request,'djangoeats/register.html',{'form':form, 'registered':registered})
 
 
-def restaurant(request):
-    #Load in details about the given restaurant
-    return HttpResponse("This page will display a specific restaurant")
+def restaurant(request,restaurant_name_slug):
+    context_dict = {}
 
-def make_review(request):
-    return HttpResponse("Here you can make a review about a restauraunt")
+    try:
+        restaurant = Restaurant.objects.get(slug=restaurant_name_slug)
+
+        context_dict['restaurant'] = restaurant
+
+    except Restaurant.DoesNotExist:
+
+        context_dict['restaurant'] = None
+
+    return render(request, 'djangoeats/restaurant.html',context=context_dict)
+    #Load in details about the given restaurant
+    #return HttpResponse("This page will display a specific restaurant")
+
+@login_required
+def make_review(request,restaurant_name_slug):
+    #POSSIBLY CHECK IF THE USER IS AUTHENTICATED
+    try:
+        restaurant = Restaurant.objects.get(slug=restaurant_name_slug)
+    except Restaurant.DoesNotExist:
+        restaurant = None
+    # You cannot add a review to a restaurant that does not exist...
+    if restaurant is None:
+        return redirect(reverse('djangoeats:home'))
+    
+    form = ReviewForm()
+
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+
+    if form.is_valid():
+        if restaurant:
+            review = form.save(commit=False)
+            review.restaurant = restaurant
+            review.reviewer = request.user
+            review.created_at = datetime.now()
+            review.save()
+            return redirect(reverse('djangoeats:restaurant',
+                            kwargs={'restaurant_name_slug':restaurant_name_slug}))
+        else:
+            print(form.errors)
+            
+    context_dict = {'form': form, 'restaurant': restaurant}
+    return render(request, 'djangoeats/makeReview.html', context=context_dict)
 
 def dashboard(request):
     #Logic that returns a specific dashboard page based on the user logged in
