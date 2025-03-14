@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+{% extends 'djangoeats/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+    Login
+{% endblock %}
+
+{% block body_block %}
+    <h1>Log in here</h1>
+    <form id="user_form" method="post" action="{% url 'djangoeats:login_view' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <input type="submit" name="submit" value="Login" />
+    </form>
+{% endblock %}

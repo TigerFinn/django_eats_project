@@ -18,10 +18,16 @@
             {% if user.user_type == 'owner' %}
             : Owner
             {% endif %}
+            <a href="{% url 'djangoeats:logout_view' %}">
             <button>Log Out</button>
+            </a>
             {% else %}
+            <a href = "{% url 'djangoeats:login_view' %}">
             <button>Log In</button>
+            </a>
+            <a href = "{% url 'djangoeats:register' %}">
             <button>Register</button>
+            </a>
             {% endif %}
             <img id="header-logo" src="{% static 'images/logo.png' %}" alt="DjangoEats Logo" width = 100, height = 100>
         </header>
