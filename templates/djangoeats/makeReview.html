@@ -1,0 +1,29 @@
+{% extends 'djangoeats/base.html' %}
+
+{% block title_block %}
+    Review
+{% endblock %}
+
+{% block body_block %}
+    <h1>You are writing a review for <strong>{{ restaurant.name }}</strong></h1>
+    <div>
+        <form id="make_review_form" method="post" action="{% url 'djangoeats:make_review' restaurant.slug %}">
+            {% csrf_token %}
+            {% for field in form.visible_fields %}
+                {{ field.errors }}
+                {{ field.help_text }}
+                {{ field }}
+            {% endfor %}
+            <input type="submit" name="submit" value="Post Review" />
+        </form>
+    </div>
+    <div id="nav_Buttons">
+        <a href="{% url 'djangoeats:restaurant' restaurant.slug %}">
+            <button>Return to {{ restaurant.name }} page</button>
+        </a>
+
+        <a href="{% url 'djangoeats:home' %}">
+            <button>Return to Home Browsing page</button>
+        </a>
+    </div>
+{% endblock %}

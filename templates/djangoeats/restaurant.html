@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+{% extends 'djangoeats/base.html' %}
+
+{% block title_block %}
+    <strong>{{ restaurant.name }}</strong>
+{% endblock %}
+
+{% block body_block %}
+
+    <div id="restaurant_details">
+        <!-- FIGURE OUT HOW TO DISPLAY THE IMAGE OF THE restaurant IF WE ARE USING IMAGE-->
+        <li>
+            <p>Owner : {{ restaurant.owner }}</p>
+            <p>Cuisine : {{ restaurant.cuisine }}</p>
+            <p>Address : {{ restaurant.address }}</p>
+            <p>Phone : {{ restaurant.phone }}</p>
+            <p>Email : {{ restaurant.email }}</p>
+        </li>
+    </div>
+    
+    {% if user.is_authenticated %}
+        <a href="{% url 'djangoeats:make_review' restaurant.slug %}">
+            <button>Make a Review</button>
+        </a>
+        <!-- IMPLEMENT FUNCTIONALITY TO ADD THIS restaurant TO THE USERS LIST OF FAVOURITES(IF WE USE A LIST) -->
+        <button>Add to favourites</button>
+    {% endif %}
+
+    <a href="{% url 'djangoeats:home' %}">
+        <button>Return Home</button>
+    </a>
+    <!-- EDIT BUTTON FOR RESRAUNT OWNERS HERE ? -->
+
+    <!-- FIGURE OUT FUNCTIONALITY FOR THESE SLIDE BAR -->
+    <div id="Reviews">
+        <h2>Reviews</h2>
+    </div>
+
+    <div id="Menu_items">
+        <h2>Menu Items</h2>
+    </div>
+
+{% endblock %}
+
