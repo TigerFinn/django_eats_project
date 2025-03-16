@@ -3,6 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from djangoeats.models import Restaurant, MenuItem, Review, UserFavorites, Profile
 from django.http import HttpResponse # type: ignore
 from djangoeats.forms import ProfileForm
+from djangoeats.forms import UserForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
@@ -60,14 +61,21 @@ def logout_view(request):
 # Register
 def register(request):
     if request.method == 'POST':
-        form = ProfileForm(request.POST)
-        if form.is_valid():
-            user = form.save()
+        user_form = UserForm(request.POST)
+        profile_form = ProfileForm(request.POST, request.FILES)
+        if user_form.is_valid() and profile_form.is_valid():
+            user = user_form.save(commit=False)
+            user.set_password(user_form.cleaned_data['password'])
+            user.save()
+            profile = profile_form.save(commit=False)
+            profile.user = user
+            profile.save()
             login(request, user)
             return redirect('djangoeats:home')
     else:
-        form = ProfileForm()
-    return render(request, 'djangoeats/register.html', {'form': form})
+        profile_form = ProfileForm()
+        user_form = UserForm()
+    return render(request, 'djangoeats/register.html', {'user_form': user_form,'profile_form': profile_form})
 
 
 

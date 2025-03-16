@@ -3,13 +3,17 @@ from djangoeats.models import Profile
 from django.contrib.auth.models import User
 from djangoeats.models import Review
 
-class ProfileForm(forms.ModelForm):
+class UserForm(forms.ModelForm):
      password = forms.CharField(widget=forms.PasswordInput())
-     user_type = forms.ChoiceField(choices=Profile.USER_TYPE_CHOICES,)
 
      class Meta:
           model = User
           fields= ['username','email','password'] 
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['user_type']
 
 
 class ReviewForm(forms.ModelForm):

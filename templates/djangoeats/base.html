@@ -15,8 +15,10 @@
             <a id="hometag" href="">DjangoEats</a>
             {% if user.is_authenticated %}
             Welcome {{user.username}}
-            {% if user.user_type == 'owner' %}
+            {% if user.profile.user_type == 'owner' %}
             : Owner
+            {% elif user.profile.user_type == 'customer' %}
+            : Customer
             {% endif %}
             <a href="{% url 'djangoeats:logout_view' %}">
             <button>Log Out</button>

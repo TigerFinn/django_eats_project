@@ -15,7 +15,8 @@ Register
         <form id="user_form" method="post" action="{% url 'djangoeats:register' %}" enctype="multipart/form-data">
             {% csrf_token %}
 
-            {{ form.as_p }}
+            {{user_form.as_p }}
+            {{profile_form.as_p }}
 
             <input type="submit" name="submit" value="Register" />
         </form>
