@@ -16,4 +16,13 @@
         <br />
         <input type="submit" name="submit" value="Login" />
     </form>
+
+    <p>Dont have an account? Make one here!</p>
+    <a href="{% url 'djangoeats:register' %}">
+        <button>Register</button>
+    </a>
+    <br>
+    <a href="{% url 'djangoeats:home' %}">
+        <button>Return to Home Browsing page</button>
+    </a>
 {% endblock %}

@@ -37,10 +37,22 @@ def restaurant_detail(request, restaurant_slug):
     restaurant = get_object_or_404(Restaurant, slug=restaurant_slug)
     menu_items = restaurant.menu_items.all()
     reviews = restaurant.reviews.all()
+    user_profile = Profile.objects.get(user=request.user)
+    owner_profile = False
+    owner_of_restaurant = False
+
+    if user_profile.user_type == 'owner':
+        owner_profile = True
+
+    if restaurant.owner == request.user:
+        owner_of_restaurant = True
+    
     context_dict ={}
     context_dict['restaurant'] = restaurant
     context_dict['menu_items'] = menu_items
     context_dict['reviews'] = reviews
+    context_dict['owner_profile'] = owner_profile
+    context_dict['owner_of_restaurant'] = owner_of_restaurant
 
     return render(request, 'djangoeats/restaurant.html', context=context_dict)
 
@@ -108,7 +120,7 @@ def make_review(request,restaurant_name_slug):
         else:
             print(form.errors)
             
-    context_dict = {'form': form, 'restaurant': restaurant}
+    context_dict = {'form': form, 'restaurant': restaurant,}
     return render(request, 'djangoeats/makeReview.html', context=context_dict)
 
 

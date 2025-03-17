@@ -20,16 +20,24 @@
     </div>
     
     {% if user.is_authenticated %}
+        {% if is_owner %}
         <a href="{% url 'djangoeats:make_review' restaurant.slug %}">
             <button>Make a Review</button>
         </a>
         <!-- IMPLEMENT FUNCTIONALITY TO ADD THIS restaurant TO THE USERS LIST OF FAVOURITES(IF WE USE A LIST) -->
         <button>Add to favourites</button>
+        {% endif %}
     {% endif %}
 
     <a href="{% url 'djangoeats:home' %}">
         <button>Return Home</button>
     </a>
+
+    {% if owner_of_restaurant %}
+    <a href="{% url 'djangoeats:restaurant_edit restaurant.slug' %}">
+        <button>edit</button>
+    </a>
+    {% endif %}
     <!-- EDIT BUTTON FOR RESRAUNT OWNERS HERE ? -->
 
     <!-- FIGURE OUT FUNCTIONALITY FOR THESE SLIDE BAR -->
