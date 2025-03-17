@@ -117,8 +117,21 @@ def dashboard(request):
     if not request.user.is_authenticated:
         return redirect('djangoeats:home') # go to home page.
 
-    restaurants = Restaurant.objects.filter(owner=request.user)
+    if request.user.profile.user_type == 'owner':
+        restaurants = Restaurant.objects.filter(owner=request.user)
+    else:
+        restaurants = UserFavorites.objects.get(user=request.user).favorite_restaurants.all()
+
+
     return render(request, 'djangoeats/dashboard.html', {'restaurants': restaurants})
 
-def restaurant_edit(request):
-    return HttpResponse("Update a restaurant that you own here!")
+#Pass restaurant and menu items in to the edit restaurant page
+def restaurant_edit(request, restaurant_slug):
+    if request.profile.user_type != 'owner':
+        redirect('djangoeats:home')
+    restaurant = Restaurant.objects.get(slug=restaurant_slug)
+    menu_items = MenuItem.objects.filter(restaurant = restaurant)
+
+    context_dict = {'restaurant': restaurant, 'menu_items':menu_items}
+
+    return render(request, 'djangoeats/restaurant_edit.html', context = context_dict)

@@ -101,6 +101,8 @@ def populate():
 
 
 def add_profile(user, user_type):
+    user.set_password("1234")
+    user.save()
     p = Profile.objects.get_or_create(user = user, user_type = user_type)[0]
     p.save()
     return p

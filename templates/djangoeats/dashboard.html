@@ -21,11 +21,12 @@
 {% block restaurant_action_block %}
 {% if user.profile.user_type == 'owner' %}
     <!-- Needs functionality -->
+     <a href = "{% url 'djangoeats:restaurant_edit' restaurant.slug %}">
     <button>Edit Restaurant</button>
+    </a>
 {% else %}
 <!-- Needs functionality -->
     <button>Remove from favourites</button> 
-
 {% endif %}
 {% endblock %}
 
