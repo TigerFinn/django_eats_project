@@ -1,22 +1,27 @@
 <!DOCTYPE html>
 {% extends 'djangoeats/base.html' %}
-{% load staticfiles %}
+{% load static %}  <!-- ✅ Fix 'staticfiles' to 'static' -->
 
 {% block body_block %}
     {% block pre_scroll_body_block %}
     {% endblock %}
-    
-    <!-- Implement a dynamic scroll function for the restaurants -->
-    <img src="{% static 'images/logo.png' %}" width = 200 height = 200>
-    <!-- Anything that extends restaurant scroll base should have a context which is a list of restaurants -->
-    {% for restaurant in restaurants %}
-    <div class = 'restaurant'>
-        <h3>{{restaurant.name}}</h3>
-        <p>{{restaurant.cuisine}}</p>
-        <!-- <p>Figure out how to put the rating here Rating</p> -->
-        <p>{{restaurant.address}}</p>
+
+    <!-- Logo -->
+    <img src="{% static 'images/logo.png' %}" width="200" height="200">
+
+    <!-- Restaurant List -->
+    <div class="restaurant-list">  <!-- ✅ Added this wrapper for styling -->
+        {% for restaurant in restaurants %}
+            <div class="restaurant-card">  <!-- ✅ Added the correct class for CSS -->
+                <h3>{{ restaurant.name }}</h3>
+                <p>Cuisine: {{ restaurant.cuisine }}</p>
+                <p>{{ restaurant.address }}</p>
+                <a href="{% url 'djangoeats:restaurant_detail' restaurant.slug %}">View Details</a>
+            </div>
+        {% empty %}
+            <p>No restaurants available.</p>
+        {% endfor %}
     </div>
-    {% endfor %}
 
     {% block post_scroll_body_block %}
     {% endblock %}

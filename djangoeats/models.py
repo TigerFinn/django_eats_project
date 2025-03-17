@@ -23,6 +23,7 @@ class Restaurant(models.Model):
     email = models.EmailField()
     phone = models.CharField(max_length=15)
     slug = models.SlugField(unique=True)
+    image = models.ImageField(upload_to='restaurant_images/', blank=True)
 
     def __str__(self):
         return self.name

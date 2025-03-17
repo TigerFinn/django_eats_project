@@ -33,8 +33,8 @@ def login_view(request):
 
 
 
-def restaurant(request, restaurant_name_slug):
-    restaurant = get_object_or_404(Restaurant, slug=restaurant_name_slug)
+def restaurant_detail(request, restaurant_slug):
+    restaurant = get_object_or_404(Restaurant, slug=restaurant_slug)
     menu_items = restaurant.menu_items.all()
     reviews = restaurant.reviews.all()
     context_dict ={}
@@ -43,6 +43,7 @@ def restaurant(request, restaurant_name_slug):
     context_dict['reviews'] = reviews
 
     return render(request, 'djangoeats/restaurant.html', context=context_dict)
+
 
 
 def UserLoggedIn(request):

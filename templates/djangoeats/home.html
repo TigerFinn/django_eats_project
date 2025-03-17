@@ -1,15 +1,27 @@
 <!DOCTYPE html>
 {% extends 'djangoeats/restaurantDisplayBase.html' %}
-{% load staticfiles %}
+{% load static %}
 
 {% block title_block %}
-Home
+    Home
 {% endblock %}
 
 {% block pre_scroll_body_block %}
-<h1>Restaurants</h1>
+    <h1>Restaurants</h1>
+    <div class="restaurant-list">
+        {% for restaurant in restaurants %}
+            <div class="restaurant-card">
+                <img src="{{ restaurant.image.url|default:'/static/images/logo.png' }}" alt="{{ restaurant.name }} Image">
+                <h3>{{ restaurant.name }}</h3>
+                <p>Cuisine: {{ restaurant.cuisine }}</p>
+                <a href="{% url 'djangoeats:restaurant_detail' restaurant.slug %}">View Details</a>
+            </div>
+        {% empty %}
+            <p>No restaurants available.</p>
+        {% endfor %}
+    </div>
 {% endblock %}
 
 {% block post_scroll_body_block %}
-<p>I'm going to be a search feature</p> 
+    <p>I'm going to be a search feature</p> 
 {% endblock %}
