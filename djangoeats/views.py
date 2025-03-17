@@ -111,9 +111,10 @@ def make_review(request,restaurant_name_slug):
     context_dict = {'form': form, 'restaurant': restaurant}
     return render(request, 'djangoeats/makeReview.html', context=context_dict)
 
+
 def dashboard(request):
-    profile = Profile.objects.get(user=request.user)
-    if profile.user_type != "owner":
+    # profile = Profile.objects.get(user=request.user)
+    if not request.user.is_authenticated:
         return redirect('djangoeats:home') # go to home page.
 
     restaurants = Restaurant.objects.filter(owner=request.user)

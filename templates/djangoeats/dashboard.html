@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+{% extends 'djangoeats/restaurantDisplayBase.html' %}
+{% load static %}
+
+{% block title_block %}
+    Dashboard
+{% endblock %}
+
+{% block pre_scroll_body_block %}
+    <div>
+    <h1> {{ user.username }}'s 
+    {% if user.profile.user_type == 'owner'%}
+        Restaurants
+    {% else %}
+        Favourites
+    {% endif %}
+    </h1>
+    </div>
+{% endblock %}
+
+{% block restaurant_action_block %}
+{% if user.profile.user_type == 'owner' %}
+    <!-- Needs functionality -->
+    <button>Edit Restaurant</button>
+{% else %}
+<!-- Needs functionality -->
+    <button>Remove from favourites</button> 
+
+{% endif %}
+{% endblock %}
+

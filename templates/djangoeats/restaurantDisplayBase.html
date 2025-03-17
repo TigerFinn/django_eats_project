@@ -6,22 +6,24 @@
     {% block pre_scroll_body_block %}
     {% endblock %}
 
-    <!-- Logo -->
-    <img src="{% static 'images/logo.png' %}" width="200" height="200">
-
-    <!-- Restaurant List -->
-    <div class="restaurant-list">  <!-- ✅ Added this wrapper for styling -->
+    <div class="restaurant-list">
         {% for restaurant in restaurants %}
-            <div class="restaurant-card">  <!-- ✅ Added the correct class for CSS -->
+            <div class="restaurant-card">
+                {% if restaurant.image %}
+                <img src="{{ restaurant.image.url|default:'/static/images/logo.png' }}" alt="{{ restaurant.name }} Image">
+                {% endif %}
                 <h3>{{ restaurant.name }}</h3>
                 <p>Cuisine: {{ restaurant.cuisine }}</p>
                 <p>{{ restaurant.address }}</p>
                 <a href="{% url 'djangoeats:restaurant_detail' restaurant.slug %}">View Details</a>
+                {% block restaurant_action_block %}
+                {% endblock %}
             </div>
         {% empty %}
             <p>No restaurants available.</p>
         {% endfor %}
     </div>
+    <h1>Scroll restaurants here</h1>
 
     {% block post_scroll_body_block %}
     {% endblock %}
