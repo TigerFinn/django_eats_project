@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 {% extends 'djangoeats/base.html' %}
-{% load staticfiles %}
+{% load static %}
 
 {% block title_block %}
     <strong>{{ restaurant.name }}</strong>
@@ -9,7 +9,6 @@
 {% block body_block %}
 
     <div id="restaurant_details">
-        <!-- FIGURE OUT HOW TO DISPLAY THE IMAGE OF THE restaurant IF WE ARE USING IMAGE-->
         <li>
             <p>Owner : {{ restaurant.owner }}</p>
             <p>Cuisine : {{ restaurant.cuisine }}</p>
@@ -38,8 +37,7 @@
         <button>edit</button>
     </a>
     {% endif %}
-    <!-- EDIT BUTTON FOR RESRAUNT OWNERS HERE ? -->
-
+    
     <!-- FIGURE OUT FUNCTIONALITY FOR THESE SLIDE BAR -->
     <div id="Reviews">
         <h2>Reviews</h2>
