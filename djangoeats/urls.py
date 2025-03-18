@@ -11,5 +11,7 @@ urlpatterns = [
     path('restaurant/<restaurant_slug>/review',views.make_review,name='make_review'),
     path('dashboard/',views.dashboard,name='dashboard'),
     path('restaurant/<restaurant_slug>/update',views.restaurant_edit,name='restaurant_edit'),
-    path('logout',views.logout_view, name='logout_view'),
+    path('logout/', views.logout_view, name='logout_view'),
+    path('search/', views.search, name='search'),
+    path('favorites/', views.favorites, name='favorites'),
 ]

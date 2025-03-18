@@ -12,7 +12,6 @@
             <input type="text" name="q" placeholder="Search restaurants...">
             <button type="submit">Search</button>
         </form>
-        <a href="{% url 'djangoeats:register_restaurant' %}" class="cta-button">Register Your Restaurant</a>
     </div>
 
     <section class="featured-restaurants">
@@ -62,7 +61,6 @@
     {% if user.is_authenticated %}
         <section class="user-dashboard">
             <h2>Welcome, {{ user.username }}!</h2>
-            <a href="{% url 'djangoeats:user_reviews' user.username %}">Your Reviews</a>
             <a href="{% url 'djangoeats:favorites' %}">Your Favorite Restaurants</a>
         </section>
     {% else %}
