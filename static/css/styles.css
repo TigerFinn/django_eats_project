@@ -5,44 +5,92 @@ body {
     padding: 0;
 }
 
-h2 {
-    margin-bottom: 15px;
+.hero-section {
+    text-align: center;
+    padding: 60px 20px;
+    background: url('../images/hero-bg.jpg') center/cover no-repeat;
+    color: white;
+}
+
+.hero-section h1 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+}
+
+.hero-section input[type="text"] {
+    padding: 10px;
+    width: 300px;
+    border-radius: 5px;
+    border: none;
+}
+
+
+.hero-section button, .cta-button {
+    padding: 10px 20px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.hero-section button:hover, .cta-button:hover {
+    background-color: #0056b3;
+}
+
+.featured-restaurants, .categories, .recent-reviews, .user-dashboard, .login-prompt {
+    text-align: center;
+    padding: 40px 20px;
 }
 
 .navbar {
-    background-color: #333;
-    padding: 15px 30px;
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    position: sticky;
-    top: 0;
-    width: 100%;
-    z-index: 1000;
+    align-items: center;
+    padding: 10px 20px;
+    background: navy;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    height: 65px;
 }
 
-
-.navbar a {
-    color: white;
-    text-decoration: none;
-    font-size: 15px;
-}
-.navbar .right {
+.nav-left {
     display: flex;
     align-items: center;
 }
 
-.navbar .right a{
-    margin-left: 16px;
-}
-
-.navbar a:hover {
-    color: #ffc108;
-}
-
-.navbar img {
-    height: 40px;
+.nav-logo {
+    height: 50px;
     width: auto;
+    margin-right: auto;
+}
+
+
+.nav-title {
+    color: white;
+    font-size: 22px;
+    font-weight: bold;
+    margin-left: 8px;
+}
+
+
+.nav-btn {
+    padding: 8px 15px;
+    background: white;
+    color: navy;
+    text-decoration: none;
+    border-radius: 20px;
+    margin-left: 10px;
+    font-weight: bold;
+    transition: 0.3s;
+    border: 1px solid white;
+}
+
+.nav-btn:hover {
+    background: lightgray;
+    color: navy;
+    transform: scale(1.05);
+    transition: 0.3s;
 }
 
 /* Restaurant List Styling */
@@ -61,7 +109,6 @@ h2 {
     padding: 15px;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    width: 280px;
     text-align: center;
     transition: transform 0.3s ease-in;
 }
@@ -69,8 +116,6 @@ h2 {
 
 .restaurant-card:hover {
     transform: scale(1.05);
-    transition: transform 0.3s ease-in-out;
-
 }
 
 .container {
@@ -109,4 +154,130 @@ h2 {
 
 .restaurant-card a:hover {
     color: #0056b3;
+}
+
+
+
+.category-list {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.category {
+    padding: 10px 15px;
+    background-color: #28a745;
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease-in-out;
+}
+.category:hover {
+    background-color: #1e7e34;
+}
+
+/* Recent Reviews */
+.review-list {
+    max-width: 800px;
+    margin: auto;
+}
+.review-card {
+    background-color: white;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* User Dashboard & Login Prompt */
+.user-dashboard a, .login-prompt a {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease-in-out;
+}
+.user-dashboard a:hover, .login-prompt a:hover {
+    background-color: #0056b3;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #343a40;
+    color: white;
+}
+
+
+
+.auth-container {
+    max-width: 400px;
+    margin: 100px auto;
+    padding: 40px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.auth-container h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.auth-container p {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.input-group {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+
+.input-group input,
+.input-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.auth-button {
+    width: 100%;
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 15px;
+}
+
+
+.auth-button:hover {
+    background: #0056b3;
+}
+
+.auth-container a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.auth-container a:hover {
+    text-decoration: underline;
 }

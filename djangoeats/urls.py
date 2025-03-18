@@ -4,7 +4,7 @@ from djangoeats import views
 app_name = 'djangoeats'
 
 urlpatterns = [
-    path('',views.home,name='home'),
+    path('',views.home, name='home'),
     path('login/',views.login_view,name='login_view'),
     path('register/',views.register,name='register'),
     path('restaurant/<slug:restaurant_slug>/', views.restaurant_detail, name='restaurant_detail'),

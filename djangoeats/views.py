@@ -15,8 +15,10 @@ from datetime import datetime
 
 
 def home(request):
-    restaurants = Restaurant.objects.all()
-    return render(request, 'djangoeats/home.html', {'restaurants' : restaurants})
+    if request.user.is_authenticated:
+        return redirect('dashboard')
+    return redirect('djangoeats:register')
+
 
 #Login
 def login_view(request):
@@ -26,7 +28,7 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('djangoeats:home')
+            return redirect('dashboard')
         else:
             return render(request, 'djangoeats/login.html', {'error': 'Invalid Username or Password'})
     return render(request, 'djangoeats/login.html')
@@ -72,7 +74,7 @@ def register(request):
             profile.user = user
             profile.save()
             login(request, user)
-            return redirect('djangoeats:home')
+            return redirect('dashboard')
     else:
         profile_form = ProfileForm()
         user_form = UserForm()
@@ -112,6 +114,7 @@ def make_review(request,restaurant_name_slug):
     return render(request, 'djangoeats/makeReview.html', context=context_dict)
 
 
+@login_required
 def dashboard(request):
     # profile = Profile.objects.get(user=request.user)
     if not request.user.is_authenticated:
