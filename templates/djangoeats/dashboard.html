@@ -20,22 +20,16 @@
     {% endif %}
 {% endblock %}
 
-    <!-- <section class="featured-restaurants">
-        <h2>Featured Restaurants</h2>
-        <div class="restaurant-list">
-            {% for restaurant in featured_restaurants %}
-                <div class="restaurant-card">
-                    <img src="{{ restaurant.image.url|default:'/static/images/logo.png' }}" alt="{{ restaurant.name }}">
-                    <h3>{{ restaurant.name }}</h3>
-                    <p>Cuisine: {{ restaurant.cuisine }}</p>
-                    <a href="{% url 'djangoeats:restaurant_detail' restaurant.slug %}">View Details</a>
-                </div>
-            {% empty %}
-                <p>No featured restaurants available.</p>
-            {% endfor %}
-        </div>
-    </section> -->
-
+<!-- Additional buttons to be within the restaurants displayed on the dashboard -->
+{% block restaurant_action_block %}
+{% if user.profile.user_type == "owner" %}
+<a href="{% url 'djangoeats:restaurant_edit' restaurant.slug %}">Edit Restaurant</a>
+{% elif user.profile.user_type == "customer" %}
+<a onclick = "removeFav()">Remove from favourites</a>
+<script src = "{% static 'js/removeFavourite.js' %}"></script>
+<div id = "rudimentary-remove-favourite"></div>
+{% endif %}
+{% endblock %}
 
     
 

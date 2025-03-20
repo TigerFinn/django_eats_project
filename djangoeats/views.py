@@ -137,7 +137,7 @@ def dashboard(request):
 
 #Pass restaurant and menu items in to the edit restaurant page
 def restaurant_edit(request, restaurant_slug):
-    if request.profile.user_type != 'owner':
+    if request.user.profile.user_type != 'owner':
         redirect('djangoeats:home')
     restaurant = Restaurant.objects.get(slug=restaurant_slug)
     menu_items = MenuItem.objects.filter(restaurant = restaurant)
