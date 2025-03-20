@@ -1,0 +1,19 @@
+{% extends "djangoeats/base.html" %}
+
+{% block title_block %}My Reviews{% endblock %}
+
+{% block body_block %}
+<h1>My Reviews</h1>
+{% if reviews %}
+    <ul>
+        {% for review in reviews %}
+            <li>
+                <strong>{{ review.restaurant.name }}</strong> - {{ review.rating }}/5
+                <p>{{ review.comment }}</p>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>You haven't written any reviews yet.</p>
+{% endif %}
+{% endblock %}

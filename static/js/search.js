@@ -23,7 +23,7 @@ function searchRestaurants() {
             let str = "";	
             response = JSON.parse(this.responseText);
             str += String();
-            if (Object.keys(response) == 0){
+            if (Object.keys(response['restaurants']).length == 0){
                 str += "<h3>Your query had no results :(</h3>";
             }
             else{

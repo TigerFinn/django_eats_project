@@ -1,0 +1,21 @@
+{% extends "djangoeats/base.html" %}
+
+{% block title_block %}Restaurant Reviews{% endblock %}
+
+{% block body_block %}
+<h1>Reviews for Your Restaurants</h1>
+
+{% if reviews %}
+    <ul>
+        {% for review in reviews %}
+            <li>
+                <strong>Restaurant: {{ review.restaurant.name }}</strong>
+                <p>Rating: {{ review.rating }}/5</p>
+                <p>{{ review.comment }}</p>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No reviews yet for your restaurants.</p>
+{% endif %}
+{% endblock %}

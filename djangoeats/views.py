@@ -34,7 +34,7 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('dashboard')
+            return redirect('djangoeats:dashboard')
         else:
             return render(request, 'djangoeats/login.html', {'error': 'Invalid Username or Password'})
     return render(request, 'djangoeats/login.html')
@@ -84,7 +84,7 @@ def register(request):
             profile.user = user
             profile.save()
             login(request, user)
-            return redirect('dashboard')
+            return redirect('djangoeats:dashboard')
     else:
         profile_form = ProfileForm()
         user_form = UserForm()
@@ -92,11 +92,12 @@ def register(request):
 
 
 
+
 @login_required
-def make_review(request,restaurant_name_slug):
+def make_review(request,restaurant_slug):
     #POSSIBLY CHECK IF THE USER IS AUTHENTICATED
     try:
-        restaurant = Restaurant.objects.get(slug=restaurant_name_slug)
+        restaurant = Restaurant.objects.get(slug=restaurant_slug)
     except Restaurant.DoesNotExist:
         restaurant = None
     # You cannot add a review to a restaurant that does not exist...
@@ -115,8 +116,8 @@ def make_review(request,restaurant_name_slug):
             review.reviewer = request.user
             review.created_at = datetime.now()
             review.save()
-            return redirect(reverse('djangoeats:restaurant_detail',
-                            kwargs={'restaurant_slug':restaurant_name_slug}))
+            return redirect(reverse('djangoeats:restaurant',
+                            kwargs={'restaurant_name_slug':restaurant_name_slug}))
         else:
             print(form.errors)
             
@@ -132,15 +133,18 @@ def dashboard(request):
 
     if request.user.profile.user_type == 'owner':
         restaurants = Restaurant.objects.filter(owner=request.user)
+        title = "Your Restaurants"
     else:
-        restaurants = UserFavorites.objects.get(user=request.user).favorite_restaurants.all()
+        favorites = UserFavorites.objects.filter(user=request.user).first()
+        restaurants = favorites.favorite_restaurants.all() if favorites else []
+        title = "Your Favorite Restaurants"
 
 
     return render(request, 'djangoeats/dashboard.html', {'restaurants': restaurants})
 
 #Pass restaurant and menu items in to the edit restaurant page
 def restaurant_edit(request, restaurant_slug):
-    if request.profile.user_type != 'owner':
+    if request.user.profile.user_type != 'owner':
         redirect('djangoeats:home')
     restaurant = Restaurant.objects.get(slug=restaurant_slug)
     menu_items = MenuItem.objects.filter(restaurant = restaurant)
@@ -163,7 +167,7 @@ def search(request):
     return JsonResponse({'restaurants':result_list})
 
 @login_required
-def RegisterRestaurant(request):
+def registerRestaurant(request):
     # If you are not a owner cannot access this page
     if  not request.user.profile.user_type == 'owner':
         return redirect(reverse('djangoeats:home'))
@@ -178,7 +182,7 @@ def RegisterRestaurant(request):
             return redirect(reverse('djangoeats:dashboard'))
             
     context_dict = {'form': RestaurantForm()}
-    return render(request, 'djangoeats/RegisterRestaurant.html', context=context_dict)
+    return render(request, 'djangoeats/registerRestaurant.html', context=context_dict)
 
 
 @login_required

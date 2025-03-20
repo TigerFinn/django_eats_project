@@ -1,0 +1,26 @@
+{% extends "djangoeats/base.html" %}
+
+{% block title_block %}My Favorite Restaurants{% endblock %}
+
+{% block body_block %}
+<h1>My Favorite Restaurants</h1>
+
+{% if favorites %}
+    <ul>
+        {% for restaurant in favorites %}
+            <li>
+                <strong>{{ restaurant.name }}</strong>
+                <p>{{ restaurant.cuisine }}</p>
+                <p>{{ restaurant.address }}</p>
+                <a href="{% url 'djangoeats:restaurant_detail' restaurant.id %}">View Details</a>
+                <form action="{% url 'djangoeats:remove_favorite' restaurant.id %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit">Remove</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>You haven't favorited any restaurants yet.</p>
+{% endif %}
+{% endblock %}

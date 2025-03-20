@@ -6,7 +6,7 @@
 
 {% block body_block %}
     <div>
-        <form id="add_Restaurant_form" method="post" action="{% url 'djangoeats:add_restaurant'%}">
+        <form id="register_Restaurant_form" method="post" action="{% url 'djangoeats:register_restaurant'%}">
             {% csrf_token %}
             {% for hidden in form.hidden_fields %}
                 {{ hidden }}

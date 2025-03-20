@@ -76,7 +76,7 @@ def populate():
 
     for rm in restaurant_menus:
         for item in rests[rm.name]:
-            add_menu_item(restaurant, item['name'], item['description'], item['price'], item['type'])
+            add_menu_item(rm, item['name'], item['description'], item['price'], item['type'])
         print(rm.name + ".... menu created")
 
     add_profile(user = User.objects.get_or_create(username = "A_Customer")[0], user_type='customer')
