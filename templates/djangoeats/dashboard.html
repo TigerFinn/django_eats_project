@@ -2,7 +2,7 @@
 {% extends 'djangoeats/restaurantDisplayBase.html' %}
 {% load static %}
 
-{% block title_block %}Dashboard | DjangoEats{% endblock %}
+{% block title_block %}Dashboard{% endblock %}
 
 {% block pre_scroll_body_block %}
     <div class="hero-section">
@@ -18,23 +18,23 @@
             <a href="{% url 'djangoeats:register_restaurant' %}" class="cta-button">Register Your Restaurant</a>
         </div>        
     {% endif %}
+    <div id = "test"></div>
 {% endblock %}
 
 <!-- Additional buttons to be within the restaurants displayed on the dashboard -->
 {% block restaurant_action_block %}
-{% if user.profile.user_type == "owner" %}
-<a href="{% url 'djangoeats:restaurant_edit' restaurant.slug %}">Edit Restaurant</a>
-{% elif user.profile.user_type == "customer" %}
-<a onclick = "removeFav()">Remove from favourites</a>
-<script src = "{% static 'js/removeFavourite.js' %}"></script>
-<div id = "rudimentary-remove-favourite"></div>
-{% endif %}
+    {% if user.profile.user_type == "owner" %}
+        <a href="{% url 'djangoeats:restaurant_edit' restaurant.slug %}">Edit Restaurant</a>
+    {% elif user.profile.user_type == "customer" %}
+        <input type="button" class="favourite-action" value="Remove from Favorites" onclick="removeFavoriteFromDashboard('{{ restaurant.slug }}')"/>
+    {% endif %}
 {% endblock %}
 
     
 
 
 {% block post_scroll_body_block %}
+
     <footer>
         <p>&copy; 2025 DjangoEats. All rights reserved.</p>
     </footer>

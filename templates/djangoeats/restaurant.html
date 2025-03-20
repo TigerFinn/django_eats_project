@@ -20,17 +20,29 @@
     
     {% if user.is_authenticated %}
         {% if not is_owner %}
-        <a href="{% url 'djangoeats:make_review' restaurant.slug %}">
-            <button>Make a Review</button>
-        </a>
-        <!-- IMPLEMENT FUNCTIONALITY TO ADD THIS restaurant TO THE USERS LIST OF FAVOURITES(IF WE USE A LIST) -->
-        <button>Add to favourites</button>
+            <a href="{% url 'djangoeats:make_review' restaurant.slug %}">
+                <button>Make a Review</button>
+            </a>
+            <!-- IMPLEMENT FUNCTIONALITY TO ADD THIS restaurant TO THE USERS LIST OF FAVOURITES(IF WE USE A LIST) -->
+             <div id = "add-or-remove">
+                {% if restaurant in user.profile.favorite_restaurants.all %}
+                    <form onsubmit = "removeFavorite()">
+                        <input type="submit" value = "Remove from Favorites"/>
+                    </form>
+                {% else %}
+                    <form onsubmit = "addFavorite()">
+                        <input type="submit" value = "Add to Favorites"/>
+                    </form>
+                {% endif %}
+            </div>
         {% endif %}
     {% endif %}
 
     <a href="{% url 'djangoeats:home' %}">
         <button>Return Home</button>
     </a>
+
+    <div id="add-or-delete"></div>
 
     {% if owner_of_restaurant %}
     <a href="{% url 'djangoeats:add_menu_item' restaurant.slug %}">

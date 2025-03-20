@@ -4,7 +4,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE',
 
 import django
 django.setup()
-from djangoeats.models import Profile, Restaurant, MenuItem, UserFavorites, Review
+from djangoeats.models import Profile, Restaurant, MenuItem, Review
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
 
@@ -120,11 +120,8 @@ def add_menu_item(restaurant, name, description, price, type):
     return m
 
 def add_user_favourite(user, restaurant):
-    f = UserFavorites.objects.get_or_create(user = user)[0]
-    f.favorite_restaurants.add(restaurant)
-    f.save()
-    return f
-
+    Profile.objects.get(user=user).favorite_restaurants.add(restaurant)
+    return user
 def add_review(user, restaurant, description, rating):
     r = Review.objects.get_or_create(reviewer = user, restaurant = restaurant, comment =  description, rating = rating)[0]
 

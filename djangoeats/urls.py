@@ -14,5 +14,8 @@ urlpatterns = [
     path('logout/',views.logout_view, name='logout_view'),
     path('search/',views.search,name='search'),
     path('dashboard/registerRestaurant/',views.registerRestaurant,name='register_restaurant'),
-    path('restaurant/<restaurant_slug>/addMenuItem/',views.addMenuItem,name='add_menu_item')
+    path('restaurant/<restaurant_slug>/addMenuItem/',views.addMenuItem,name='add_menu_item'),
+    path('dashboard/remove/',views.removeDashboardFavorite, name='removeDashboardFavorite'),
+    path('restaurant/<restaurant_slug>/add/',views.addFavorite,name='addFavorite'),
+    path('restaurant/<restaurant_slug>/remove/',views.removeFavorite, name='removeFavorite'),
 ]

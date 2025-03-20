@@ -1,6 +1,6 @@
 
 from django.shortcuts import render, get_object_or_404, redirect
-from djangoeats.models import Restaurant, MenuItem, Review, UserFavorites, Profile
+from djangoeats.models import Restaurant, MenuItem, Review, Profile
 from django.http import HttpResponse # type: ignore
 from djangoeats.forms import ProfileForm
 from djangoeats.forms import UserForm
@@ -135,8 +135,7 @@ def dashboard(request):
         restaurants = Restaurant.objects.filter(owner=request.user)
         title = "Your Restaurants"
     else:
-        favorites = UserFavorites.objects.filter(user=request.user).first()
-        restaurants = favorites.favorite_restaurants.all() if favorites else []
+        restaurants = request.user.profile.favorite_restaurants.all()
         title = "Your Favorite Restaurants"
 
 
@@ -154,17 +153,6 @@ def restaurant_edit(request, restaurant_slug):
     return render(request, 'djangoeats/restaurant_edit.html', context = context_dict)
 
 
-def search(request):
-    nameQuery = request.GET['name']
-    addressQuery = request.GET['address']
-    cuisineQuery = request.GET['cuisine']
-    if nameQuery or addressQuery or cuisineQuery:
-        result_list = query_restaurants([nameQuery,addressQuery,cuisineQuery])
-    else:
-        result_list = list(Restaurant.objects.values())
-
-
-    return JsonResponse({'restaurants':result_list})
 
 @login_required
 def registerRestaurant(request):
@@ -211,3 +199,44 @@ def addMenuItem(request,restaurant_slug):
     
     context_dict = {'form':form,'restaurant':restaurant}
     return render(request , 'djangoeats/addMenuItem.html' , context=context_dict)
+
+def search(request):
+    nameQuery = request.GET['name']
+    addressQuery = request.GET['address']
+    cuisineQuery = request.GET['cuisine']
+    if nameQuery or addressQuery or cuisineQuery:
+        result_list = query_restaurants([nameQuery,addressQuery,cuisineQuery])
+    else:
+        result_list = list(Restaurant.objects.values())
+
+    # result_list = JsonResponse({'restaurants':result_list})
+    # print(result_list['restaurants'])
+    return JsonResponse({'restaurants':result_list})
+
+
+#Take a restaurant name and remove it from the favorites of the current user
+def removeDashboardFavorite(request):
+    restaurant_slug=request.GET['slug']
+
+    for r in request.user.profile.favorite_restaurants.values():
+        if r['slug'] == restaurant_slug:
+            request.user.profile.favorite_restaurants.remove(Restaurant.objects.get(slug=r['slug']))
+            return JsonResponse({'restaurants':list(request.user.profile.favorite_restaurants.values())})
+  
+
+    return JsonResponse({'restaurants':list(request.user.profile.favorite_restaurants.values())})
+
+def addFavorite(request, restaurant_slug):
+    for r in Restaurant.objects.values():
+        if r['slug'] == restaurant_slug:
+            request.user.profile.favorite_restaurants.add(Restaurant.objects.get(slug=r['slug']))
+            break
+    return JsonResponse({'newText':"Remove from Favourites", 'function':"removeFavorite()"})
+
+def removeFavorite(request, restaurant_slug):
+    for r in request.user.profile.favorite_restaurants.values():
+        if r['slug'] == restaurant_slug:
+            request.user.profile.favorite_restaurants.remove(Restaurant.objects.get(slug=r['slug']))
+            break    
+    
+    return JsonResponse({'newText':"Add to Favourites", 'function':"addFavorite()"})
