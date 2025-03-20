@@ -87,10 +87,10 @@ def register(request):
 
 
 @login_required
-def make_review(request,restaurant_name_slug):
+def make_review(request,restaurant_slug):
     #POSSIBLY CHECK IF THE USER IS AUTHENTICATED
     try:
-        restaurant = Restaurant.objects.get(slug=restaurant_name_slug)
+        restaurant = Restaurant.objects.get(slug=restaurant_slug)
     except Restaurant.DoesNotExist:
         restaurant = None
     # You cannot add a review to a restaurant that does not exist...
@@ -109,8 +109,8 @@ def make_review(request,restaurant_name_slug):
             review.reviewer = request.user
             review.created_at = datetime.now()
             review.save()
-            return redirect(reverse('djangoeats:restaurant',
-                            kwargs={'restaurant_name_slug':restaurant_name_slug}))
+            return redirect(reverse('djangoeats:restaurant_detail',
+                            kwargs={'restaurant_slug':restaurant_slug}))
         else:
             print(form.errors)
             
