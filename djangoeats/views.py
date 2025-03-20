@@ -164,6 +164,6 @@ def search(request):
 def register_restaurant(request):
     if request.user.profile.user_type != "owner":
         return redirect('djangoeats:dashboard')
-    return render(request, 'djangoeats/register_restaurant.html')
+    return render(request, 'djangoeats/restaurant_register.html')
 
 
