@@ -1,3 +1,4 @@
+import json
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -13,7 +14,6 @@ class Profile(models.Model):
     def __str__(self):
         return f"{self.user.username} ({self.user_type})"
 
-
 class Restaurant(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='restaurants')
     name = models.CharField(max_length=100)
@@ -27,7 +27,10 @@ class Restaurant(models.Model):
 
     def __str__(self):
         return self.name
-
+    
+    # def toJSON(self):
+    #     d = {'owner':self.owner, 'name':self.name,'cuisine':self.cuisine,'address':self.address,'email':self.email,'phone':self.phone,'slug':self.slug}
+    #     return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
 
 class MenuItem(models.Model):
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, related_name='menu_items')
@@ -52,7 +55,6 @@ class UserFavorites(models.Model):
     def __str__(self):
         return self.user.username
     
-
 
 class Review(models.Model):
     reviewer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reviews')

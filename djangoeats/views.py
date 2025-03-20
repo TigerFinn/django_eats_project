@@ -10,6 +10,11 @@ from django.urls import reverse
 from djangoeats.forms import ReviewForm
 from datetime import datetime
 
+import json
+from django.http import JsonResponse
+
+from djangoeats.restaurant_search import basicSearch, query_restaurants
+
 
 # Create your views here.
 
@@ -147,3 +152,16 @@ def restaurant_edit(request, restaurant_slug):
     context_dict = {'restaurant': restaurant, 'menu_items':menu_items}
 
     return render(request, 'djangoeats/restaurant_edit.html', context = context_dict)
+
+
+def search(request):
+    nameQuery = request.GET['name']
+    addressQuery = request.GET['address']
+    cuisineQuery = request.GET['cuisine']
+    if nameQuery or addressQuery or cuisineQuery:
+        result_list = query_restaurants([nameQuery,addressQuery,cuisineQuery])
+    else:
+        result_list = list(Restaurant.objects.values())
+
+
+    return JsonResponse({'restaurants':result_list})
