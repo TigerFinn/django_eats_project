@@ -172,29 +172,34 @@ def registerRestaurant(request):
     if  not request.user.profile.user_type == 'owner':
         return redirect(reverse('djangoeats:home'))
 
+    form = RestaurantForm()
+
     if request.method == 'POST':
         form = RestaurantForm(request.POST)
 
     if form.is_valid():
             restaurant = form.save(commit=False)
+            restaurant.owner = request.user
             restaurant.slug = slugify(restaurant.name)
             restaurant.save()
             return redirect(reverse('djangoeats:dashboard'))
             
-    context_dict = {'form': RestaurantForm()}
+    context_dict = {'form': form}
     return render(request, 'djangoeats/registerRestaurant.html', context=context_dict)
 
 
 @login_required
 def addMenuItem(request,restaurant_slug):
 
-    restaurant = Restaurant.objects.get(restaurant_slug=restaurant_slug)
+    restaurant = Restaurant.objects.get(slug=restaurant_slug)
     owner_of_restaurant = (request.user == restaurant.owner)
 
     #Only want the owner of the restaurant to add menu Items
     if  not owner_of_restaurant:
         return redirect(reverse('djangoeats:home'))
     
+    form = MenuItemForm()
+
     if request.method == 'POST':
         form = MenuItemForm(request.POST)
 
@@ -202,7 +207,7 @@ def addMenuItem(request,restaurant_slug):
         menu_item = form.save(commit=False)
         menu_item.restaurant = restaurant
         menu_item.save()
-        return redirect(reverse('djangoeats:restaurant_details',kwargs={'restaurant_slug':restaurant_slug}))
+        return redirect(reverse('djangoeats:restaurant_detail',kwargs={'restaurant_slug':restaurant_slug}))
     
-    context_dict = {'form':MenuItemForm()}
+    context_dict = {'form':form,'restaurant':restaurant}
     return render(request , 'djangoeats/addMenuItem.html' , context=context_dict)

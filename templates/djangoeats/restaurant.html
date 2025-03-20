@@ -33,7 +33,7 @@
     </a>
 
     {% if owner_of_restaurant %}
-    <a href="{% url 'djangoeats:add_menu_item restaurant.slug' %}">
+    <a href="{% url 'djangoeats:add_menu_item' restaurant.slug %}">
         <button>add Menu Item</button>
     </a>
     {% endif %}

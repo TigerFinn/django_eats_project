@@ -38,18 +38,17 @@ class SearchForm(forms.ModelForm):
           fields = ['name','location','cuisine','rating']
 
 class RestaurantForm(forms.ModelForm):
-     owner = forms.CharField(max_length=50,help_text="Please enter the owner of the Restaurant")
-     name = forms.CharField(max_length=Restaurant.NAME_MAX_LENGTH,help_text="Please enter the name of your Restaurant")
-     cuisine = forms.CharField(max_length=Restaurant.CUISINE_MAX_LENGTH,help_text="Please enter your restaurants Cuisine")
-     address = forms.CharField(max_length=Restaurant.ADDRESS_MAX_LENGTH,help_text="Please enter the Address of your Restaurant")
+     name = forms.CharField(max_length=Restaurant.NAME_MAX_LENGTH,widget=forms.TextInput(attrs={'placeholder': 'Please enter the name of your restaurant'}),help_text='name')
+     cuisine = forms.CharField(max_length=Restaurant.CUISINE_MAX_LENGTH,widget=forms.TextInput(attrs={'placeholder': 'Please enter your restaurant’s cuisine'}),help_text='cuisine')
+     address = forms.CharField(max_length=Restaurant.ADDRESS_MAX_LENGTH,widget=forms.TextInput(attrs={'placeholder': 'Please enter your restaurant’s address'}),help_text='address')
      email = forms.EmailInput()
-     phone = forms.CharField(max_length=Restaurant.PHONE_MAX_LENGTH,help_text="Please enter your restaurants phone number")
+     phone = forms.CharField(max_length=Restaurant.PHONE_MAX_LENGTH,widget=forms.TextInput(attrs={'placeholder': 'Please enter your restaurant’s phone number'}),help_text='phone')
      image = forms.ImageField(required=False, help_text="Upload an image for your restaurant")
      slug = forms.CharField(widget=forms.HiddenInput(), required=False)
 
      class Meta:
-          Model = Restaurant
-          exclude = ['slug',]
+          model = Restaurant
+          exclude = ['slug','owner',]
 
 class MenuItemForm(forms.ModelForm):
     class Meta:
