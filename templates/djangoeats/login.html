@@ -1,28 +1,27 @@
-<!DOCTYPE html>
 {% extends 'djangoeats/base.html' %}
-{% load staticfiles %}
+{% load static %}
 
-{% block title_block %}
-    Login
-{% endblock %}
+{% block title_block %}Login | DjangoEats{% endblock %}
 
 {% block body_block %}
-    <h1>Log in here</h1>
-    <form id="user_form" method="post" action="{% url 'djangoeats:login_view' %}" enctype="multipart/form-data">
-        {% csrf_token %}
-        username: <input type="text" name="username" value="" size="50" />
-        <br />
-        password: <input type="password" name="password" value="" size="50" />
-        <br />
-        <input type="submit" name="submit" value="Login" />
-    </form>
+    <div class="auth-container">
+        <h1>Welcome Back!</h1>
+        <p>Log in and explore the best restaurants.</p>
 
-    <p>Dont have an account? Make one here!</p>
-    <a href="{% url 'djangoeats:register' %}">
-        <button>Register</button>
-    </a>
-    <br>
-    <a href="{% url 'djangoeats:home' %}">
-        <button>Return to Home Browsing page</button>
-    </a>
+        <form method="POST" action="{% url 'djangoeats:login_view' %}">
+            {% csrf_token %}
+            <div class="input-group">
+                <label>Username</label>
+                <input type="text" name="username" required>
+            </div>
+            <div class="input-group">
+                <label>Password</label>
+                <input type="password" name="password" required>
+            </div>
+            <button type="submit" class="auth-button">Login</button>
+        </form>
+
+        <p>Don't have an account? <a href="{% url 'djangoeats:register' %}">Register here</a></p>
+    </div>
+
 {% endblock %}

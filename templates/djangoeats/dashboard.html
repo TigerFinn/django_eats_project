@@ -2,35 +2,78 @@
 {% extends 'djangoeats/restaurantDisplayBase.html' %}
 {% load static %}
 
-{% block title_block %}
-    Dashboard
-{% endblock %}
+{% block title_block %}Dashboard | DjangoEats{% endblock %}
 
-{% block pre_scroll_body_block %}
-    <div>
-    <h1> {{ user.username }}'s 
-    {% if user.profile.user_type == 'owner'%}
-        Restaurants
-    {% else %}
-        Favourites
-    {% endif %}
-    </h1>
+{% block body_block %}
+    <div class="hero-section">
+        <h1>Find & Review the Best Restaurants Near You!</h1>
+        <p>THIS IS THE DASHBOARD</p>
+        <form action="{% url 'djangoeats:search' %}" method="GET">
+            <input type="text" name="q" placeholder="Search restaurants...">
+            <button type="submit">Search</button>
+        </form>
+        <a href="{% url 'djangoeats:register_restaurant' %}" class="cta-button">Register Your Restaurant</a>
     </div>
-{% endblock %}
 
-{% block restaurant_action_block %}
-{% if user.profile.user_type == 'owner' %}
-    <!-- Needs functionality -->
-     <a href = "{% url 'djangoeats:restaurant_edit' restaurant.slug %}">
-    <button>Edit Restaurant</button>
-    </a>
-{% else %}
-<!-- Needs functionality -->
-    <button>Remove from favourites</button> 
-{% endif %}
-<br>
-<a href="{% url 'djangoeats:home' %}">
-    <button>Return to Home Browsing page</button>
-</a>
-{% endblock %}
+    <section class="featured-restaurants">
+        <h2>Featured Restaurants</h2>
+        <div class="restaurant-list">
+            {% for restaurant in featured_restaurants %}
+                <div class="restaurant-card">
+                    <img src="{{ restaurant.image.url|default:'/static/images/logo.png' }}" alt="{{ restaurant.name }}">
+                    <h3>{{ restaurant.name }}</h3>
+                    <p>Cuisine: {{ restaurant.cuisine }}</p>
+                    <a href="{% url 'djangoeats:restaurant_detail' restaurant.slug %}">View Details</a>
+                </div>
+            {% empty %}
+                <p>No featured restaurants available.</p>
+            {% endfor %}
+        </div>
+    </section>
 
+    <section class="categories">
+        <h2>Browse by Cuisine</h2>
+        <div class="category-list">
+            {% for category in cuisine_categories %}
+                <a href="{% url 'djangoeats:cuisine_filter' category.slug %}" class="category">{{ category.name }}</a>
+            {% empty %}
+                <p>No categories available.</p>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section class="recent-reviews">
+        <h2>Recent Reviews</h2>
+        <div class="review-list">
+            {% for review in recent_reviews %}
+                <div class="review-card">
+                    <strong>{{ review.user.username }}</strong> reviewed 
+                    <a href="{% url 'djangoeats:restaurant_detail' review.restaurant.slug %}">
+                        {{ review.restaurant.name }}
+                    </a>
+                    <p>{{ review.content|truncatewords:20 }}</p>
+                </div>
+            {% empty %}
+                <p>No recent reviews available.</p>
+            {% endfor %}
+        </div>
+    </section>
+
+    {% if user.is_authenticated %}
+        <section class="user-dashboard">
+            <h2>Welcome, {{ user.username }}!</h2>
+            <a href="{% url 'djangoeats:user_reviews' user.username %}">Your Reviews</a>
+            <a href="{% url 'djangoeats:favorites' %}">Your Favorite Restaurants</a>
+        </section>
+    {% else %}
+        <section class="login-prompt">
+            <h2>Join DjangoEats!</h2>
+            <a href="{% url 'djangoeats:login_view' %}" class="cta-button">Log In</a>
+            <a href="{% url 'djangoeats:register' %}" class="cta-button">Register</a>
+        </section>
+    {% endif %}
+
+    <footer>
+        <p>&copy; 2025 DjangoEats. All rights reserved.</p>
+    </footer>
+{% endblock %}
