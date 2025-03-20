@@ -13,4 +13,6 @@ urlpatterns = [
     path('restaurant/<restaurant_slug>/update/',views.restaurant_edit,name='restaurant_edit'),
     path('logout/',views.logout_view, name='logout_view'),
     path('search/',views.search,name='search'),
+    path('dashboard/RegisterRestaurant',views.RegisterRestaurant,name='register_restaurant'),
+    path('restaurant/<restaurant_slug>/AddMenuItem/',views.addMenuItem , name='add_menu_item'),
 ]

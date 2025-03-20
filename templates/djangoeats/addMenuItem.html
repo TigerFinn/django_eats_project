@@ -1,0 +1,28 @@
+{% extends 'djangoeats/base.html' %}
+
+{% block title_block %}
+    Add a Menu Item - {{restaurant.name}}
+{% endblock %}
+
+{% block body_block %}
+    <div>
+        <form id="add_menu_Item_form" method="post" action="{% url 'djangoeats:add_menu_item' restaurant.slug %}">
+            {% csrf_token %}
+            {% for field in form.visible_fields %}
+                {{ field.errors }}
+                {{ field.help_text }}
+                {{ field }}
+            {% endfor %}
+            <input type="submit" name="submit" value="Add Restaurant" />
+        </form>
+    </div>
+    <div id="nav_Buttons">
+        <a href="{% url 'djangoeats:restaurant restaurant.slug'%}">
+            <button>Return to Restaurant page</button>
+        </a>
+
+        <a href="{% url 'djangoeats:dashboard' %}">
+            <button>dashboard</button>
+        </a>
+    </div>
+{% endblock %}

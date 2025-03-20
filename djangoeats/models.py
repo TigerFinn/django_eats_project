@@ -15,13 +15,18 @@ class Profile(models.Model):
         return f"{self.user.username} ({self.user_type})"
 
 class Restaurant(models.Model):
+    NAME_MAX_LENGTH = 100
+    CUISINE_MAX_LENGTH = 50
+    ADDRESS_MAX_LENGTH = 255
+    PHONE_MAX_LENGTH = 15
+
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='restaurants')
-    name = models.CharField(max_length=100)
-    cuisine = models.CharField(max_length=50)
+    name = models.CharField(max_length=NAME_MAX_LENGTH)
+    cuisine = models.CharField(max_length=CUISINE_MAX_LENGTH)
     menu = models.TextField(blank=True)
-    address = models.CharField(max_length=255)
+    address = models.CharField(max_length=ADDRESS_MAX_LENGTH)
     email = models.EmailField()
-    phone = models.CharField(max_length=15)
+    phone = models.CharField(max_length=PHONE_MAX_LENGTH)
     slug = models.SlugField(unique=True)
     image = models.ImageField(upload_to='restaurant_images/', blank=True)
 
