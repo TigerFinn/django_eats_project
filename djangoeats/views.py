@@ -31,7 +31,7 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('dashboard')
+            return redirect('djangoeats:dashboard')
         else:
             return render(request, 'djangoeats/login.html', {'error': 'Invalid Username or Password'})
     return render(request, 'djangoeats/login.html')
@@ -77,11 +77,12 @@ def register(request):
             profile.user = user
             profile.save()
             login(request, user)
-            return redirect('dashboard')
+            return redirect('djangoeats:dashboard')
     else:
         profile_form = ProfileForm()
         user_form = UserForm()
     return render(request, 'djangoeats/register.html', {'user_form': user_form,'profile_form': profile_form})
+
 
 
 
@@ -125,8 +126,11 @@ def dashboard(request):
 
     if request.user.profile.user_type == 'owner':
         restaurants = Restaurant.objects.filter(owner=request.user)
+        title = "Your Restaurants"
     else:
-        restaurants = UserFavorites.objects.get(user=request.user).favorite_restaurants.all()
+        favorites = UserFavorites.objects.filter(user=request.user).first()
+        restaurants = favorites.favorite_restaurants.all() if favorites else []
+        title = "Your Favorite Restaurants"
 
 
     return render(request, 'djangoeats/dashboard.html', {'restaurants': restaurants})
@@ -154,3 +158,12 @@ def search(request):
 
 
     return JsonResponse({'restaurants':result_list})
+
+
+@login_required
+def register_restaurant(request):
+    if request.user.profile.user_type != "owner":
+        return redirect('djangoeats:dashboard')
+    return render(request, 'djangoeats/register_restaurant.html')
+
+

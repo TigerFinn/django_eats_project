@@ -7,6 +7,11 @@
     {% endblock %}
 
     <div id="restaurant-list">
+        {% if user.is_authenticated %}
+            <p style="color: red;">You are logged in as: {{ user.username }}</p>
+        {% else %}
+            <p style="color: red;">You are NOT logged in.</p>
+        {% endif %}
         {% for restaurant in restaurants %}
             <div class="restaurant-card">
                 {% if restaurant.image %}
