@@ -4,7 +4,7 @@
 
 {% block title_block %}Dashboard | DjangoEats{% endblock %}
 
-{% block body_block %}
+{% block pre_scroll_body_block %}
     <div class="hero-section">
         <h1>Find & Review the Best Restaurants Near You!</h1>
         <p>THIS IS THE DASHBOARD</p>
@@ -18,6 +18,7 @@
             <a href="{% url 'djangoeats:register_restaurant' %}" class="cta-button">Register Your Restaurant</a>
         </div>        
     {% endif %}
+{% endblock %}
 
     <section class="featured-restaurants">
         <h2>Featured Restaurants</h2>
@@ -39,7 +40,7 @@
     
 
 
-
+{% block post_scroll_body_block %}
     <footer>
         <p>&copy; 2025 DjangoEats. All rights reserved.</p>
     </footer>
