@@ -47,7 +47,7 @@ function displayCallBack(response) {
         str += `<h3>` + restaurant['name'] + `</h3>`;
         str += `<p>Cuisine: `+ restaurant['cuisine'] + `</p>`;
         str += `<p>`+ restaurant['address'] + `</p>`;
-        str += `<a href="restaurant/`+ restaurant['slug']+`">View Details</a>`;
+        str += `< href="restaurant/`+ restaurant['slug']+`">View Details</a>`;
         str += `</div>`;
         }
     }
@@ -77,7 +77,6 @@ function restaurantFavoriteCallBack(response){
 }
 
 function removeFavoriteFromDashboard(restaurant_slug){
-    // document.getElementById("test").innerHTML = "<p>" + restaurant_name + "</p>"
     const stringURL = 'remove/?slug=' + restaurant_slug
     ajaxGetRequest(stringURL, dashboardCallBack)
 }
@@ -100,8 +99,8 @@ function dashboardCallBack(response) {
         str += `<h3>` + restaurant['name'] + `</h3>`;
         str += `<p>Cuisine: `+ restaurant['cuisine'] + `</p>`;
         str += `<p>`+ restaurant['address'] + `</p>`;
-        str += `<a href="restaurant/`+ restaurant['slug']+`">View Details</a>`;
-        str+= `<input type="button" class="favourite-action" value="Remove from Favorites" onclick="removeFavoriteFromDashboard('{{ restaurant.slug }}')"/>`
+        str += `<a href="{% url "djangoeats:restaurant_detail" restaurant.slug %}">View Details</a>`;
+        str+= `<input type="button" class="favourite-action" value="Remove from Favorites" onclick="removeFavoriteFromDashboard('{{ restaurant.slug }}')"/>`;
         str += `</div>`;
         }
     }
