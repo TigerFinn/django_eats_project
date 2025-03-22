@@ -5,25 +5,32 @@
 {% endblock %}
 
 {% block body_block %}
-    <h1>You are writing a review for <strong>{{ restaurant.name }}</strong></h1>
-    <div>
-        <form id="make_review_form" method="post" action="{% url 'djangoeats:make_review' restaurant.slug %}">
-            {% csrf_token %}
-            {% for field in form.visible_fields %}
-                {{ field.errors }}
-                {{ field.help_text }}
-                {{ field }}
-            {% endfor %}
-            <input type="submit" name="submit" value="Post Review" />
-        </form>
-    </div>
-    <div id="nav_Buttons">
-        <a href="{% url 'djangoeats:restaurant_detail' restaurant.slug %}">
-            <button>Return to {{ restaurant.name }} page</button>
-        </a>
+<div class="review-container">
+    <h1 class="form-title">Review {{ restaurant.name }}</h1>
+    <p class="form-sub">Share your Opinion on the Restaurant</p>
 
-        <a href="{% url 'djangoeats:home' %}">
-            <button>Return to Home Browsing page</button>
-        </a>
-    </div>
+    <form method="post">
+
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label for="id_rating" class="form-label">Rating</label>
+            {{ form.rating }}
+        </div>
+
+
+        <div class="form-group">
+            <label for="id_comment" class="form-label">Comment</label>
+            {{ form.comment }}
+
+        </div>
+
+
+        <div class="rev-nav-Buttons">
+            <button type="submit" class="btn primary">Post Review</button>
+            <a href="{% url 'djangoeats:restaurant_detail' restaurant.slug %}" class="btn secondary">Back to {{ restaurant.name }}</a>
+            <a href="{% url 'djangoeats:home' %}" class="btn secondary">Back to Home</a>
+        </div>
+    </form>
+</div>
 {% endblock %}

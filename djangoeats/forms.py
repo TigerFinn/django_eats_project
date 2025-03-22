@@ -21,8 +21,19 @@ class ProfileForm(forms.ModelForm):
 
 
 class ReviewForm(forms.ModelForm):
-     rating = forms.ChoiceField(widget=forms.Select,choices=RATING_CHOICES)
-     comment = forms.CharField(required=False)
+     rating = forms.ChoiceField(
+          widget=forms.Select(attrs={
+               'class': 'form-select',
+               'style': 'max-width: 120px'
+          }),
+          choices=RATING_CHOICES)
+     comment = forms.CharField(
+          required=False,
+          widget=forms.Textarea(attrs={
+               'class': 'form-textarea',
+               'placeholder': 'Leave a comment',
+               'rows': 4
+          }))
 
      class Meta:
           model = Review
