@@ -44,7 +44,7 @@ def login_view(request):
 def restaurant_detail(request, restaurant_slug):
     restaurant = get_object_or_404(Restaurant, slug=restaurant_slug)
     menu_items = MenuItem.objects.filter(restaurant=restaurant)
-    reviews = Review.objects.filter(restaurant=restaurant)
+    reviews = Review.objects.filter(restaurant=restaurant).select_related('reviewer') #That will eagerly load the user attached to each review, so review.user.username works without issues.
     is_owner = (request.user.profile.user_type == 'owner')
     owner_of_restaurant = (request.user == restaurant.owner)
     context_dict ={}

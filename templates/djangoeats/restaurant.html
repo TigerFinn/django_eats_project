@@ -8,56 +8,92 @@
 
 {% block body_block %}
 
-    <div id="restaurant_details">
-        <li>
-            <p>Owner : {{ restaurant.owner }}</p>
-            <p>Cuisine : {{ restaurant.cuisine }}</p>
-            <p>Address : {{ restaurant.address }}</p>
-            <p>Phone : {{ restaurant.phone }}</p>
-            <p>Email : {{ restaurant.email }}</p>
-        </li>
-    </div>
-    
-    {% if user.is_authenticated %}
-        {% if not is_owner %}
-            <a href="{% url 'djangoeats:make_review' restaurant.slug %}">
-                <button>Make a Review</button>
-            </a>
-            <!-- IMPLEMENT FUNCTIONALITY TO ADD THIS restaurant TO THE USERS LIST OF FAVOURITES(IF WE USE A LIST) -->
-             <div id = "add-or-remove">
-                {% if restaurant in user.profile.favorite_restaurants.all %}
-                    <form onsubmit = "removeFavorite()">
-                        <input type="submit" value = "Remove from Favorites"/>
-                    </form>
-                {% else %}
-                    <form onsubmit = "addFavorite()">
-                        <input type="submit" value = "Add to Favorites"/>
-                    </form>
+    <div class="restaurant-details-container">
+
+        <h1>{{ restaurant.name }}</h1>
+
+        <div id="restaurant_details">
+                <p>Owner : {{ restaurant.owner }}</p>
+                <p>Cuisine : {{ restaurant.cuisine }}</p>
+                <p>Address : {{ restaurant.address }}</p>
+                <p>Phone : {{ restaurant.phone }}</p>
+                <p>Email : {{ restaurant.email }}</p>
+        </div>
+
+        <div class="restaurant-actions">
+
+            <a href="{% url 'djangoeats:home' %}" class="btn">Return Home</a>
+
+            {% if user.is_authenticated %}
+                {% if not is_owner %}
+                    <a href="{% url 'djangoeats:make_review' restaurant.slug %}" class="btn">Make your Review</a>
+                    {% if restaurant in user.profile.favorite_restaurants.all %}
+                        <form onsubmit = "removeFavorite()">
+                            <input type="submit" value = "Remove from Favorites" class="btn danger"/>
+                        </form>
+                    {% else %}
+                        <form onsubmit = "addFavorite()">
+                            <input type="submit" value = "Add to Favorites"/>
+                        </form>
+                    {% endif %}
                 {% endif %}
-            </div>
+            {% endif %}
+
+        {% if owner_of_restaurant %}
+            <a href="{% url 'djangoeats:add_menu_item' restaurant.slug %}" class="btn">Add a Menu Item</a>
         {% endif %}
-    {% endif %}
 
-    <a href="{% url 'djangoeats:home' %}">
-        <button>Return Home</button>
-    </a>
+        </div>
 
-    <div id="add-or-delete"></div>
+        <hr>
 
-    {% if owner_of_restaurant %}
-    <a href="{% url 'djangoeats:add_menu_item' restaurant.slug %}">
-        <button>add Menu Item</button>
-    </a>
-    {% endif %}
-    
-    <!-- FIGURE OUT FUNCTIONALITY FOR THESE SLIDE BAR -->
-    <div id="Reviews">
-        <h2>Reviews</h2>
+        <div id="Reviews">
+            <h2>Reviews</h2>
+
+            {% with has_reviews=False %}
+                <div class="reviews-list">
+                    {% for review in reviews %}
+                        {% if review.body %}
+                            {% if not has_reviews %}
+                                {% with True as has_reviews %}
+                                {% endwith %}
+                            {% endif %}
+                            <div class="review-card">
+                                <p class="review-user"><strong>{{ review.reviewer.username }}</strong> has said:</p>
+                                <p class="review-body">"{{ review.body }}"</p>
+                                <p class="review-rating">Rating: {{ review.rating }}/5</p>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                    {% if not has_reviews %}
+                        <p class="empty-message">No reviews yet.</p>
+                    {% endif %}
+                </div>
+            {% endwith %}
+
+
+        <div id="Menu_items">
+            <h2>Menu Item</h2>
+
+            {% if menu_items %}
+                <div class="menu-list">
+                    {% for item in menu_items %}
+                        <div class="menu-card">
+                            <h3 class="menu-name">{{ item.name }}</h3>
+                            <p class="menu-description">{{ item.description }}</p>
+                            <p class="menu-price">£{{ item.price }}</p>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="empty-message">No Menu Items available.</p>
+            {% endif %}
+
+        </div> 
+
+        
+
     </div>
 
-    <div id="Menu_items">
-        <h2>Menu Items</h2>
-    </div>
 
 {% endblock %}
-
