@@ -96,11 +96,12 @@ body {
 /* Restaurant List Styling */
 #restaurant-list {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     gap: 20px;
     padding: 20px;
     max-width: 1200px;
-    margin: auto;
+    margin: 30px;
+    justify-content: start;
 }
 
 /* An Individual Restaurant Card */
@@ -111,6 +112,9 @@ body {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     text-align: center;
     transition: transform 0.3s ease-in;
+    
+    width: 280px;
+    margin: 0;
 }
 
 
@@ -292,4 +296,59 @@ footer {
 
 .auth-container a:hover {
     text-decoration: underline;
+}
+
+/* homepage edits */
+
+.search-container {
+    max-width: 900px;
+    margin: 30px auto 10px auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+#search-form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+}
+
+#search-form input[type="text"] {
+    padding: 10px;
+    width: 200px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+#search-button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+#search-button:hover {
+    background-color: #0056b3;
+}
+
+.subtitle {
+    text-align: center;
+    font-size: 18px;
+    color: #555;
+    margin-top: -10px;
+    margin-bottom: 30px;
+}
+
+
+.empty-message {
+    text-align: center;
+    font-size: 18px;
+    color: #888;
+    margin-top: 30px;
 }

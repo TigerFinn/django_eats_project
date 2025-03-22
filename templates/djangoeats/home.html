@@ -8,19 +8,26 @@
 {% endblock %}
 
 
+
+
 {% block pre_scroll_body_block %}
+    <div class="hero-section">
+        <h1>Welcome to DjangoEats</h1>
+        <p>Find the best restaurants near you.</p>
+    </div>
+
     <h1>Restaurants</h1>
+    <p class="'subtitle"> Check out best places to eat.</p>
+    
+
+    <div class="search-container">
+        <form id="search-form">
+            {% csrf_token %}
+            <input type="text" id="search-name-input" placeholder="Name..." />
+            <input type="text" id="search-address-input" placeholder="Address..." />
+            <input type="text" id="search-cuisine-input" placeholder="Cuisine..." />
+            <input type="button" id="search-button" value="Search" onclick="searchRestaurants()" />
+        </form>
+    </div>
 {% endblock %}
 
-{% block post_scroll_body_block %}
-<form id = "search-form">
-    {% csrf_token %}
-    <input type="text" id="search-name-input" placeholder="Name..."/>
-    <input type="text" id="search-address-input" placeholder="Address..."/>
-    <input type="text" id="search-cuisine-input" placeholder="Cuisine..."/>
-
-    <input type="button" id="search-button" value="Search" onclick="searchRestaurants()"/>
-</form>
-    <input type="button" id="favorite-action" value="Test" onclick="addFavorite()"/>
-<div id = 'test'></div>
-{% endblock %}

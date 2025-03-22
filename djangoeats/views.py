@@ -117,7 +117,7 @@ def make_review(request,restaurant_slug):
             review.created_at = datetime.now()
             review.save()
             return redirect(reverse('djangoeats:restaurant',
-                            kwargs={'restaurant_name_slug':restaurant_name_slug}))
+                            kwargs={'restaurant_name_slug':restaurant_slug}))
         else:
             print(form.errors)
             
