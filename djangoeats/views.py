@@ -72,23 +72,42 @@ def logout_view(request):
     return redirect('djangoeats:home')
 
 # Register
+from django.shortcuts import render, redirect
+from django.contrib.auth import login
+from .forms import UserForm, ProfileForm
+
 def register(request):
     if request.method == 'POST':
         user_form = UserForm(request.POST)
         profile_form = ProfileForm(request.POST, request.FILES)
+        
         if user_form.is_valid() and profile_form.is_valid():
             user = user_form.save(commit=False)
             user.set_password(user_form.cleaned_data['password'])
             user.save()
+
             profile = profile_form.save(commit=False)
             profile.user = user
+            profile.latitude = profile_form.cleaned_data.get('latitude') 
+            profile.longitude = profile_form.cleaned_data.get('longitude')  
+
             profile.save()
+
             login(request, user)
             return redirect('djangoeats:dashboard')
+        else:
+            print("User form errors:", user_form.errors)
+            print("Profile form errors:", profile_form.errors)
     else:
         profile_form = ProfileForm()
         user_form = UserForm()
-    return render(request, 'djangoeats/register.html', {'user_form': user_form,'profile_form': profile_form})
+    
+    return render(request, 'djangoeats/register.html', {'user_form': user_form, 'profile_form': profile_form})
+
+
+
+
+
 
 
 
@@ -169,6 +188,8 @@ def registerRestaurant(request):
             restaurant = form.save(commit=False)
             restaurant.owner = request.user
             restaurant.slug = slugify(restaurant.name)
+            restaurant.latitude = form.cleaned_data.get('latitude') 
+            restaurant.longitude = form.cleaned_data.get('longitude')  
             restaurant.save()
             return redirect(reverse('djangoeats:dashboard'))
             

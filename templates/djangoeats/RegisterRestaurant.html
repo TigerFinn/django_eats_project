@@ -1,12 +1,14 @@
 {% extends 'djangoeats/base.html' %}
 
+{% load static %}  
+
 {% block title_block %}
     Add a restaurant
 {% endblock %}
 
 {% block body_block %}
     <div>
-        <form id="register_Restaurant_form" method="post" action="{% url 'djangoeats:register_restaurant'%}">
+        <form id="register_Restaurant_form" method="post" action="{% url 'djangoeats:register_restaurant' %}">
             {% csrf_token %}
             {% for hidden in form.hidden_fields %}
                 {{ hidden }}
@@ -18,11 +20,23 @@
                 <br>
             {% endfor %}
             <br>
+            
+            <input type="hidden" id="latitude" name="latitude">
+            <input type="hidden" id="longitude" name="longitude">
             <input type="submit" name="submit" value="Add Restaurant" />
         </form>
     </div>
+
+    <div id="map" style="height: 400px; width: 100%;"></div>
+
+   
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAqZDKn4Elrg5ipAG22DDnLM2hjCLwBQ-A&libraries=places&callback=initMap" async defer></script>
+
+  
+    <script src="{% static 'js/map.js' %}"></script>
+
     <div id="nav_Buttons">
-        <a href="{% url 'djangoeats:dashboard'%}">
+        <a href="{% url 'djangoeats:dashboard' %}">
             <button>Return to Dashboard</button>
         </a>
 

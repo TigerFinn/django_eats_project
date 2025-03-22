@@ -17,6 +17,9 @@ class Restaurant(models.Model):
     phone = models.CharField(max_length=PHONE_MAX_LENGTH)
     slug = models.SlugField(unique=True)
     image = models.ImageField(upload_to='restaurant_images/', blank=True)
+    latitude = models.DecimalField(max_digits=30, decimal_places=15, null=True, blank=True)
+    longitude = models.DecimalField(max_digits=30, decimal_places=15, null=True, blank=True)
+
 
     def __str__(self):
         return self.name
@@ -28,6 +31,8 @@ class Profile(models.Model):
     ]
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     user_type = models.CharField(max_length=10, choices=USER_TYPE_CHOICES)
+    latitude = models.DecimalField(max_digits=30, decimal_places=15, null=False,default=0, blank=False)
+    longitude = models.DecimalField(max_digits=30, decimal_places=15, null=False,default=0, blank=False)
     profile_picture = models.ImageField(upload_to='profile_pics/', blank=True)
     favorite_restaurants = models.ManyToManyField(Restaurant, related_name='favorited_by', blank=True)
 

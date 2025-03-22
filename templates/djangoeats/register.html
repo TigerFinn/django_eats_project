@@ -1,7 +1,7 @@
 {% extends 'djangoeats/base.html' %}
 {% load static %}
 
-{% block title_block %}Register | DjangoEats{% endblock%}
+{% block title_block %}Register | DjangoEats{% endblock %}
 
 {% block body_block %}
     <div class="auth-container">
@@ -29,9 +29,23 @@
                     <option value="owner">Restaurant Owner</option>
                 </select>
             </div>
+
+            <div class="input-group">
+                <label>Location</label>
+                <div id="map" style="height: 300px; width: 100%;"></div>
+                <input type="hidden" id="latitude" name="latitude">
+                <input type="hidden" id="longitude" name="longitude">
+            </div>
+
             <button type="submit" class="auth-button">Register</button>
         </form>
 
         <p>Already have an account? <a href="{% url 'djangoeats:login_view' %}">Log In</a></p>
     </div>
+
+    
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAqZDKn4Elrg5ipAG22DDnLM2hjCLwBQ-A&libraries=places&callback=initMap" async defer></script>
+
+    
+    <script src="{% static 'js/map.js' %}"></script>
 {% endblock %}
