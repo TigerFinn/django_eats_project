@@ -8,3 +8,4 @@ Curent identified bugs:
 -JS restaurantDisplay does not redirect to proper html construction
 -Restaurants don't display on dashboard for owners
 -No action button on floating dashboard cards
+-Non-signed in users can't view restaurant pages (if logic)
