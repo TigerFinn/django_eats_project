@@ -10,13 +10,20 @@ from django.contrib.auth.models import User
 
 
 def populate():
+    users = [
+        {'type':"Customer",'username':"A_Customer",'email':"A_Person@place.com",'lat':55.8731, 'lon':-4.2923},
+        {'type':"Customer",'username':"Another_Customer",'email':"A.P.1234@definitely.real",'lat':55.9497, 'lon':-3.2009},
+        {'type':"Owner",'username':"Jim",'email':"admin@jimsfoodplaces.com",'lat':0, 'lon':0},
+        {'type':"Owner",'username':"Jill",'email':"jill@business.co.uk",'lat':0, 'lon':0},
+    ]
+
     restaurants = [
         {'owner':"Jim", 'name':"Good Food Place",'cuisine':"British",'address':"12 Good Food Road, Glasgow, G99 1JL",
-        'email':"goodfoodinfo@jimsfood.com",'phone':1234567890},
+        'email':"goodfoodinfo@jimsfood.com",'phone':1234567890,'lat':55.8727, 'lon':-4.2910},
         {'owner':"Jim", 'name':"Better Food Place",'cuisine':"Italian",'address':"34 Dessert Island, Edinburgh, E46 2KZ",
-        'email':"betterfoodinfo@jimsfoodplace.com",'phone':9876543210},
+        'email':"betterfoodinfo@jimsfoodplace.com",'phone':9876543210,'lat':55.9500, 'lon':-3.1885},
         {'owner':"Jill", 'name':"FoodMadeHere",'cuisine':"Indian",'address':"34 Curry Lane, Glasgow, G24 3LA",
-        'email':"jill@foodmadehere.com",'phone':5432109876},
+        'email':"jill@foodmadehere.com",'phone':5432109876,'lat':55.8643, 'lon': -4.2501},
     ]
 
     goodFoodPlaceMenuItems = [
@@ -68,9 +75,13 @@ def populate():
         'FoodMadeHere':foodMadeHereMenuItems,
     }
 
+    for u in users:
+        add_profile(u)
+        print("Profile added: " + u['username'])
+
     for r in restaurants:
-        owner =  add_profile(user = User.objects.get_or_create(username = r['owner'])[0], user_type = 'owner')
-        restaurant = add_restaurant(owner.user, r['name'], r['cuisine'],r['address'],r['email'],r['phone'])
+        owner = User.objects.get(username = r['owner'])
+        restaurant = add_restaurant(owner, r['name'], r['cuisine'],r['address'],r['email'], r['phone'], r['lat'], r['lon'])
         restaurant_menus.append(restaurant)
         print(restaurant.name + ".... created")
 
@@ -79,8 +90,6 @@ def populate():
             add_menu_item(rm, item['name'], item['description'], item['price'], item['type'])
         print(rm.name + ".... menu created")
 
-    add_profile(user = User.objects.get_or_create(username = "A_Customer")[0], user_type='customer')
-    add_profile(user = User.objects.get_or_create(username = "Another_Customer")[0], user_type='customer')
 
     reviews = [{'user':"A_Customer",'restaurant':"Good Food Place",'description':"AMAZING FOOD. MY favourite PLACE!",'rating':5},
                {'user':"Another_Customer",'restaurant':"Good Food Place",'description':"Horrific food. Why are the peas mushed?",'rating':1},
@@ -100,15 +109,16 @@ def populate():
 
 
 
-def add_profile(user, user_type):
+def add_profile(u):
+    user =  User.objects.get_or_create(username = u['username'], email = u['email'])[0]
     user.set_password("1234")
     user.save()
-    p = Profile.objects.get_or_create(user = user, user_type = user_type)[0]
+    p = Profile.objects.get_or_create(user = user, user_type = u['type'], latitude = u['lat'], longitude = u['lon'])[0]
     p.save()
     return p
 
-def add_restaurant(owner,name,cuisine,address,email,phone):
-    r = Restaurant.objects.get_or_create(owner = owner, name = name, cuisine = cuisine, address = address, email = email, phone = phone)[0]
+def add_restaurant(owner,name,cuisine,address,email,phone,lat,lon):
+    r = Restaurant.objects.get_or_create(owner = owner, name = name, cuisine = cuisine, address = address, email = email, phone = phone,latitude=lat,longitude=lon)[0]
     r.slug = slugify(name)
     r.menu = ""
     r.save()
@@ -120,8 +130,12 @@ def add_menu_item(restaurant, name, description, price, type):
     return m
 
 def add_user_favourite(user, restaurant):
-    Profile.objects.get(user=user).favorite_restaurants.add(restaurant)
+    p = Profile.objects.get_or_create(user=user)[0]
+    p.favorite_restaurants.add(restaurant)
+    p.save()
+
     return user
+
 def add_review(user, restaurant, description, rating):
     r = Review.objects.get_or_create(reviewer = user, restaurant = restaurant, comment =  description, rating = rating)[0]
 
