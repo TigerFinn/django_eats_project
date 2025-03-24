@@ -6,11 +6,6 @@
     {% block pre_scroll_body_block %}
     {% endblock %}
 
-    {% if user.is_authenticated %}
-    <p style="color: red;">You are logged in as: {{ user.username }}</p>
-    {% else %}
-        <p style="color: red;">You are NOT logged in.</p>
-    {% endif %}
 
     <div id="restaurant-list">
         {% for restaurant in restaurants %}
