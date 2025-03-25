@@ -24,8 +24,8 @@ function searchRestaurants() {
     }
     
     //Make ajax request and resolve using callback function that formats restaurant tabs
-    var searchURL = "search/?name=" + nameQuery + "&address=" + addressQuery + "&cuisine=" + cuisineQuery;
-    ajaxGetRequest(searchURL, displayCallBack, false)
+    const stringURL = "search/?name=" + nameQuery + "&address=" + addressQuery + "&cuisine=" + cuisineQuery;
+    ajaxGetRequest(stringURL, displayCallBack, false)
 }
 
 
@@ -80,21 +80,4 @@ function restaurantFavoriteCallBack(response){
 function removeFavoriteFromDashboard(restaurant_slug){
     const stringURL = 'remove/?slug=' + restaurant_slug
     ajaxGetRequest(stringURL, displayCallBack, true)
-}
-
-
-//Code I found online
-function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        const cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
 }
