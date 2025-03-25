@@ -11,7 +11,7 @@ from djangoeats.forms import ReviewForm
 from datetime import datetime
 from djangoeats.forms import RestaurantForm
 from django.utils.text import slugify
-from djangoeats.forms import MenuItemForm
+from djangoeats.forms import MenuItemForm, UserForm, ProfileForm
 
 import json
 from django.http import JsonResponse
@@ -44,8 +44,12 @@ def login_view(request):
 def restaurant_detail(request, restaurant_slug):
     restaurant = get_object_or_404(Restaurant, slug=restaurant_slug)
     menu_items = MenuItem.objects.filter(restaurant=restaurant)
+    if request.user.is_authenticated:
+        is_owner = (request.user.profile.user_type == 'owner')
+    else:
+        is_owner = False
+
     reviews = Review.objects.filter(restaurant=restaurant).select_related('reviewer') #That will eagerly load the user attached to each review, so review.user.username works without issues.
-    is_owner = (request.user.profile.user_type == 'owner')
     owner_of_restaurant = (request.user == restaurant.owner)
     context_dict ={}
     context_dict['restaurant'] = restaurant
@@ -71,10 +75,6 @@ def logout_view(request):
         logout(request)
     return redirect('djangoeats:home')
 
-# Register
-from django.shortcuts import render, redirect
-from django.contrib.auth import login
-from .forms import UserForm, ProfileForm
 
 def register(request):
     if request.method == 'POST':
@@ -106,12 +106,6 @@ def register(request):
 
 
 
-
-
-
-
-
-
 @login_required
 def make_review(request,restaurant_slug):
     #POSSIBLY CHECK IF THE USER IS AUTHENTICATED
@@ -135,8 +129,8 @@ def make_review(request,restaurant_slug):
             review.reviewer = request.user
             review.created_at = datetime.now()
             review.save()
-            return redirect(reverse('djangoeats:restaurant',
-                            kwargs={'restaurant_name_slug':restaurant_slug}))
+            return redirect(reverse('djangoeats:restaurant_detail',
+                            kwargs={'restaurant_slug':restaurant_slug}))
         else:
             print(form.errors)
             
