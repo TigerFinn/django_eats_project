@@ -4,6 +4,7 @@
 
 {% block title_block %}Dashboard{% endblock %}
 
+
 {% block pre_scroll_body_block %}
     <div class="hero-section">
         <h1>Find & Review the Best Restaurants Near You!</h1>
@@ -22,19 +23,10 @@
 
 <!-- Additional buttons to be within the restaurants displayed on the dashboard -->
 {% block restaurant_action_block %}
+    <h3>hello</h3>
     {% if user.profile.user_type == "owner" %}
         <a href="{% url 'djangoeats:restaurant_edit' restaurant.slug %}">Edit Restaurant</a>
     {% elif user.profile.user_type == "customer" %}
         <input type="button" class="favourite-action" value="Remove from Favorites" onclick="removeFavoriteFromDashboard('{{ restaurant.slug }}')"/>
     {% endif %}
-{% endblock %}
-
-    
-
-
-{% block post_scroll_body_block %}
-
-    <footer>
-        <p>&copy; 2025 DjangoEats. All rights reserved.</p>
-    </footer>
 {% endblock %}

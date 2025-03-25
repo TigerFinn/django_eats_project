@@ -105,10 +105,10 @@ def register(request):
     return render(request, 'djangoeats/register.html', {'user_form': user_form, 'profile_form': profile_form})
 
 
-
 @login_required
 def make_review(request,restaurant_slug):
-    #POSSIBLY CHECK IF THE USER IS AUTHENTICATED
+    if request.user.profile.user_type != 'customer':
+        return redirect(reverse('djangoeats:restaurant_detail',kwargs={'restaurant_slug':restaurant_slug}))
     try:
         restaurant = Restaurant.objects.get(slug=restaurant_slug)
     except Restaurant.DoesNotExist:
