@@ -1,15 +1,19 @@
 //Basic search functionality
-function ajaxGetRequest(stringURL, callback, booleanVal){
+function ajaxGetRequest(stringURL, callback){
     var xhttp= new XMLHttpRequest();
 
     xhttp.onreadystatechange = function(){
         if (this.readyState == 4 && this.status == 200) {
-            callback(JSON.parse(this.responseText), booleanVal);
+            callback(JSON.parse(this.responseText));
         }       
     };
     xhttp.open("GET",stringURL, true);
     
     xhttp.send();	
+}
+
+function clearSearch(){
+    ajaxGetRequest("search/?name=&address=&cuisine=", displayCallBack)
 }
 
 function searchRestaurants() {	
@@ -24,14 +28,23 @@ function searchRestaurants() {
     }
     
     //Make ajax request and resolve using callback function that formats restaurant tabs
-    const stringURL = "search/?name=" + nameQuery + "&address=" + addressQuery + "&cuisine=" + cuisineQuery;
-    ajaxGetRequest(stringURL, displayCallBack, false)
+    if (document.URL.includes("djangoeats/")){
+        var amendURL = ""
+    }
+    else{
+        var amendURL = "djangoeats/"
+    }
+
+    const stringURL = amendURL + "search/?name=" + nameQuery + "&address=" + addressQuery + "&cuisine=" + cuisineQuery;
+    ajaxGetRequest(stringURL, displayCallBack)
 }
 
 
-function displayCallBack(response, removeButton) {
+function displayCallBack(response) {
     let str = "";	
     str += String();
+    var dashboard = document.URL.includes("dashboard")
+    
     if (Object.keys(response['restaurants']).length == 0){
         str += "<h3>Your query had no results :(</h3>";
     }
@@ -44,10 +57,15 @@ function displayCallBack(response, removeButton) {
         str += `<h3>` + restaurant['name'] + `</h3>`;
         str += `<p>Cuisine: `+ restaurant['cuisine'] + `</p>`;
         str += `<p>`+ restaurant['address'] + `</p>`;
-        str += `<a href="restaurant/`+ restaurant['slug'] + `">View Details</a>`;
-        if (removeButton){
-            str += `<a onclick="removeFavoriteFromDashboard('` + restaurant['slug'] + `')">Remove from Favourites</a>`;
-        }
+        str += `<a href="restaurant/`+ restaurant['slug'] + `">View Details</a>\n`;
+        // if (dashboard){
+        //     if (response['owner']){
+        //         str += `<a href="{% url 'djangoeats:add_menu_item'` + restaurant['slug'] + ` %}">Add menu item</a>`
+        //     } else{
+        //         str += `<a onclick="removeFavoriteFromDashboard('` + restaurant['slug'] + `')">Remove from Favourites</a>`;
+
+        //     }
+        
         str += `</div>`;
         }
     }
@@ -79,5 +97,5 @@ function restaurantFavoriteCallBack(response){
 
 function removeFavoriteFromDashboard(restaurant_slug){
     const stringURL = 'remove/?slug=' + restaurant_slug
-    ajaxGetRequest(stringURL, displayCallBack, true)
+    ajaxGetRequest(stringURL, displayCallBack)
 }

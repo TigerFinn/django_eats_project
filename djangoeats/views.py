@@ -45,7 +45,7 @@ def restaurant_detail(request, restaurant_slug):
     restaurant = get_object_or_404(Restaurant, slug=restaurant_slug)
     menu_items = MenuItem.objects.filter(restaurant=restaurant)
     if request.user.is_authenticated:
-        is_owner = (request.user.profile.user_type == 'owner')
+        is_owner = (request.user.profile.user_type == 'Owner')
     else:
         is_owner = False
 
@@ -144,7 +144,7 @@ def dashboard(request):
     if not request.user.is_authenticated:
         return redirect('djangoeats:home') # go to home page.
 
-    if request.user.profile.user_type == 'owner':
+    if request.user.profile.user_type.lower() == 'owner':
         restaurants = Restaurant.objects.filter(owner=request.user)
         title = "Your Restaurants"
     else:
@@ -170,7 +170,7 @@ def restaurant_edit(request, restaurant_slug):
 @login_required
 def registerRestaurant(request):
     # If you are not a owner cannot access this page
-    if  not request.user.profile.user_type == 'owner':
+    if  not request.user.profile.user_type.lower() == 'owner':
         return redirect(reverse('djangoeats:home'))
 
     form = RestaurantForm()
@@ -223,10 +223,14 @@ def search(request):
         result_list = query_restaurants([nameQuery,addressQuery,cuisineQuery])
     else:
         result_list = list(Restaurant.objects.values())
+    if request.user.profile.user_type == "Owner":
+        owner = True
+    else:
+        owner = False
 
     # result_list = JsonResponse({'restaurants':result_list})
     # print(result_list['restaurants'])
-    return JsonResponse({'restaurants':result_list})
+    return JsonResponse({'restaurants':result_list, 'owner':owner})
 
 
 #Take a restaurant name and remove it from the favorites of the current user
