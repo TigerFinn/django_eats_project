@@ -107,7 +107,7 @@ def register(request):
 
 @login_required
 def make_review(request,restaurant_slug):
-    if request.user.profile.user_type != 'customer':
+    if request.user.profile.user_type != 'Customer':
         return redirect(reverse('djangoeats:restaurant_detail',kwargs={'restaurant_slug':restaurant_slug}))
     try:
         restaurant = Restaurant.objects.get(slug=restaurant_slug)

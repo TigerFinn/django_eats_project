@@ -23,10 +23,9 @@
 
 <!-- Additional buttons to be within the restaurants displayed on the dashboard -->
 {% block restaurant_action_block %}
-    <h3>hello</h3>
-    {% if user.profile.user_type == "owner" %}
+    {% if user.profile.user_type == "Owner" %}
         <a href="{% url 'djangoeats:restaurant_edit' restaurant.slug %}">Edit Restaurant</a>
-    {% elif user.profile.user_type == "customer" %}
-        <input type="button" class="favourite-action" value="Remove from Favorites" onclick="removeFavoriteFromDashboard('{{ restaurant.slug }}')"/>
+    {% elif user.profile.user_type == "Customer" %}
+        <a onclick="removeFavoriteFromDashboard('{{ restaurant.slug }}')">Remove from Favourites</a>
     {% endif %}
 {% endblock %}
