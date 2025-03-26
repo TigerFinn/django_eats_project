@@ -621,3 +621,26 @@ footer {
     font-size: 14px;
     resize: vertical;
 }
+
+.centered-button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+
+.nav-btn-inverse {
+    padding: 8px 15px;
+    background: navy;
+    color: white;
+    text-decoration: none;
+    border-radius: 20px;
+    font-weight: bold;
+    border: 1px solid navy;
+    transition: 0.3s;
+}
+
+.nav-btn-inverse:hover {
+    background: #000066;
+    transform: scale(1.05);
+}
