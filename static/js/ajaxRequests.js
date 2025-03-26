@@ -12,6 +12,9 @@ function ajaxGetRequest(stringURL, callback){
     xhttp.send();	
 }
 
+function clearSearch(){
+    ajaxGetRequest("search/?name=&address=&cuisine=", displayCallBack)
+}
 
 function searchRestaurants() {	
     //Get inputs
@@ -25,14 +28,22 @@ function searchRestaurants() {
     }
     
     //Make ajax request and resolve using callback function that formats restaurant tabs
-    var searchURL = "search/?name=" + nameQuery + "&address=" + addressQuery + "&cuisine=" + cuisineQuery;
-    ajaxGetRequest(searchURL, displayCallBack)
+    if (document.URL.includes("djangoeats/")){
+        var amendURL = ""
+    }
+    else{
+        var amendURL = "djangoeats/"
+    }
+
+    const stringURL = amendURL + "search/?name=" + nameQuery + "&address=" + addressQuery + "&cuisine=" + cuisineQuery;
+    ajaxGetRequest(stringURL, displayCallBack)
 }
+
 
 function displayCallBack(response) {
     let str = "";	
     str += String();
-    // document.getElementById("restaurant-list").innerHTML = response; 
+    var dashboard = document.URL.includes("dashboard")
     
     if (Object.keys(response['restaurants']).length == 0){
         str += "<h3>Your query had no results :(</h3>";
@@ -42,12 +53,15 @@ function displayCallBack(response) {
         str += '<div class="restaurant-card">';
         if (restaurant['image']){
             str +=`<img src="{{ restaurant.image.url|default:'/static/images/logo.png' }}" alt="{{ restaurant.name }} Image">`;
-
         }
         str += `<h3>` + restaurant['name'] + `</h3>`;
         str += `<p>Cuisine: `+ restaurant['cuisine'] + `</p>`;
         str += `<p>`+ restaurant['address'] + `</p>`;
-        str += `< href="restaurant/`+ restaurant['slug']+`">View Details</a>`;
+        str += `<a href="restaurant/`+ restaurant['slug'] + `">View Details</a>\n`;
+        if (dashboard){
+            str += `<a onclick="removeFavoriteFromDashboard('` + restaurant['slug'] + `')">Remove from Favourites</a>`;
+            }
+        
         str += `</div>`;
         }
     }
@@ -67,60 +81,17 @@ function removeFavorite(){
 
 function restaurantFavoriteCallBack(response){
     let str = "";
-    str +=`<form onsubmit = "`
-    str+= response['function']
-    str +=`"><input type="submit" value = "`
-    str += response['newText']
-    str+= `"/></form>`
-    str+= `<h1>A TEST</h1>`
+    str += String();
+    str +=`<form onsubmit = "`;
+    str+= response['function'];
+    str +=`"><input type="submit" value = "`;
+    str += response['newText'];
+    str+= `"/></form>`;
+    str+= `<h1>A TEST</h1>`;
     document.getElementById('add-or-remove').innerHTML = str;
 }
 
 function removeFavoriteFromDashboard(restaurant_slug){
     const stringURL = 'remove/?slug=' + restaurant_slug
-    ajaxGetRequest(stringURL, dashboardCallBack)
-}
-
-function dashboardCallBack(response) {
-    let str = "";	
-    str += String();
-    // document.getElementById("restaurant-list").innerHTML = response; 
-    
-    if (Object.keys(response['restaurants']).length == 0){
-        str += "<h3>Your query had no results :(</h3>";
-    }
-    else{
-    for (restaurant of response['restaurants']){
-        str += '<div class="restaurant-card">';
-        if (restaurant['image']){
-            str +=`<img src="{{ restaurant.image.url|default:'/static/images/logo.png' }}" alt="{{ restaurant.name }} Image">`;
-
-        }
-        str += `<h3>` + restaurant['name'] + `</h3>`;
-        str += `<p>Cuisine: `+ restaurant['cuisine'] + `</p>`;
-        str += `<p>`+ restaurant['address'] + `</p>`;
-        str += `<a href="{% url "djangoeats:restaurant_detail" restaurant.slug %}">View Details</a>`;
-        str+= `<input type="button" class="favourite-action" value="Remove from Favorites" onclick="removeFavoriteFromDashboard('{{ restaurant.slug }}')"/>`;
-        str += `</div>`;
-        }
-    }
-    document.getElementById("restaurant-list").innerHTML = str; 
-}
-
-
-
-//Code I found online
-function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        const cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
+    ajaxGetRequest(stringURL, displayCallBack)
 }
