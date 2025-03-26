@@ -45,7 +45,7 @@ def restaurant_detail(request, restaurant_slug):
     restaurant = get_object_or_404(Restaurant, slug=restaurant_slug)
     menu_items = MenuItem.objects.filter(restaurant=restaurant)
     if request.user.is_authenticated:
-        is_owner = (request.user.profile.user_type == 'Owner')
+        is_owner = (request.user.profile.user_type.lower() == 'owner')
     else:
         is_owner = False
 

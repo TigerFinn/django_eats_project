@@ -14,7 +14,7 @@
         </div>
         
         
-    {% if user.is_authenticated and user.profile.user_type == "owner" %}
+    {% if user.is_authenticated and user.profile.user_type|lower == "owner" %}
         <div class="centered-button-container">
             <a href="{% url 'djangoeats:register_restaurant' %}" class="nav-btn-inverse">Register Your Restaurant</a>
         </div>        
@@ -24,9 +24,9 @@
 
 <!-- Additional buttons to be within the restaurants displayed on the dashboard -->
 {% block restaurant_action_block %}
-    {% if user.profile.user_type == "Owner" %}
+    {% if user.profile.user_type|lower == "owner" %}
         <a href="{% url 'djangoeats:add_menu_item' restaurant.slug %}">Add menu item</a>
-    {% elif user.profile.user_type == "Customer" %}
+    {% elif user.profile.user_type|lower == "customer" %}
         <a onclick="removeFavoriteFromDashboard('{{ restaurant.slug }}')">Remove from Favourites</a>
     {% endif %}
 {% endblock %}
