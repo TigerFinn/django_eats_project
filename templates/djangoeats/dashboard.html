@@ -12,10 +12,13 @@
 
         <!-- {% include 'djangoeats/searchForm.html' %} -->
         </div>
-    {% if user.is_authenticated and user.profile.user_type == "Owner" %}
-        <div class="register-container">
-            <a href="{% url 'djangoeats:register_restaurant' %}" class="cta-button">Register Your Restaurant</a>
+        
+        
+    {% if user.is_authenticated and user.profile.user_type == "owner" %}
+        <div class="centered-button-container">
+            <a href="{% url 'djangoeats:register_restaurant' %}" class="nav-btn-inverse">Register Your Restaurant</a>
         </div>        
+        
     {% endif %}
 {% endblock %}
 

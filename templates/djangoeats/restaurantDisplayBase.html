@@ -17,18 +17,16 @@
                 <p>Cuisine: {{ restaurant.cuisine }}</p>
                 <p>{{ restaurant.address }}</p>
                 <a href="{% url 'djangoeats:restaurant_detail' restaurant.slug %}">View Details</a>
-    
+
                 {% block restaurant_action_block %}
-                
+
                 {% endblock %}
+                
             </div>
         {% empty %}
-            <h3>No restaurants available</h3>
+            <p>No Registered Restaurants.</p>
         {% endfor %}
     </div>
-    
-
-    
     {% block post_scroll_body_block %}
     {% endblock %}
 {% endblock %}
