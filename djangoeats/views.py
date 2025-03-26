@@ -46,7 +46,7 @@ def restaurant_detail(request, restaurant_slug):
     restaurant = get_object_or_404(Restaurant, slug=restaurant_slug)
     menu_items = MenuItem.objects.filter(restaurant=restaurant)
     if request.user.is_authenticated:
-        is_owner = (request.user.profile.user_type == 'Owner')
+        is_owner = (request.user.profile.user_type.lower() == 'owner')
     else:
         is_owner = False
 
@@ -224,14 +224,8 @@ def search(request):
         result_list = query_restaurants([nameQuery,addressQuery,cuisineQuery])
     else:
         result_list = list(Restaurant.objects.values())
-    if request.user.profile.user_type == "Owner":
-        owner = True
-    else:
-        owner = False
 
-    # result_list = JsonResponse({'restaurants':result_list})
-    # print(result_list['restaurants'])
-    return JsonResponse({'restaurants':result_list, 'owner':owner})
+    return JsonResponse({'restaurants':result_list})
 
 def search_nearby(request):
     
