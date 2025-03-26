@@ -58,13 +58,9 @@ function displayCallBack(response) {
         str += `<p>Cuisine: `+ restaurant['cuisine'] + `</p>`;
         str += `<p>`+ restaurant['address'] + `</p>`;
         str += `<a href="restaurant/`+ restaurant['slug'] + `">View Details</a>\n`;
-        // if (dashboard){
-        //     if (response['owner']){
-        //         str += `<a href="{% url 'djangoeats:add_menu_item'` + restaurant['slug'] + ` %}">Add menu item</a>`
-        //     } else{
-        //         str += `<a onclick="removeFavoriteFromDashboard('` + restaurant['slug'] + `')">Remove from Favourites</a>`;
-
-        //     }
+        if (dashboard){
+            str += `<a onclick="removeFavoriteFromDashboard('` + restaurant['slug'] + `')">Remove from Favourites</a>`;
+            }
         
         str += `</div>`;
         }
