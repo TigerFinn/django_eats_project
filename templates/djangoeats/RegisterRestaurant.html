@@ -7,18 +7,30 @@
 {% endblock %}
 
 {% block body_block %}
-    <div>
+    <div class="restaurant-form-container">
         <form id="register_Restaurant_form" method="post" action="{% url 'djangoeats:register_restaurant' %}">
             {% csrf_token %}
             {% for hidden in form.hidden_fields %}
                 {{ hidden }}
             {% endfor %}
             {% for field in form.visible_fields %}
-                {{ field.errors }}
-                {{ field.help_text }}
-                {{ field }}
-                <br>
-            {% endfor %}
+            {% if field.name == "image" %}
+                <div class="form-group file-upload">
+                    {{ field.label_tag }}
+                    <label for="{{ field.id_for_label }}" class="custom-label">
+                        <span id="file-name">No File Chosen</span>
+                        <span class="upload-button">Pick an Image</span>
+                    </label>
+                    {{ field }} 
+                </div>
+            {% else %}
+                <div class="form-group">
+                        {{ field.label_tag }}
+                        {{ field }}
+                        <div class="error">{{ field.errors }}</div>
+                </div>
+            {% endif %}
+{% endfor %}
             <br>
             
             <input type="hidden" id="latitude" name="latitude">
