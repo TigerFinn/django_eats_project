@@ -17,6 +17,7 @@ import json
 from django.http import JsonResponse
 
 from djangoeats.restaurant_search import basicSearch, query_restaurants
+from .haversine import haversine
 
 
 # Create your views here.
@@ -231,6 +232,35 @@ def search(request):
     # result_list = JsonResponse({'restaurants':result_list})
     # print(result_list['restaurants'])
     return JsonResponse({'restaurants':result_list, 'owner':owner})
+
+def search_nearby(request):
+    
+    user_latitude = float(request.GET.get('lat'))
+    user_longitude = float(request.GET.get('lon'))
+    restaurants = list(Restaurant.objects.values())
+    
+    result_list = []
+
+    for restaurant in restaurants:
+        distance = haversine(float(user_latitude), float(user_longitude), float(restaurant['latitude']), float(restaurant['longitude']))
+        result_list.append({
+            "name": restaurant['name'],
+            "address": restaurant['address'],
+            "cuisine": restaurant['cuisine'],
+            "latitude": restaurant['latitude'],
+            "longitude": restaurant['longitude'],
+            "distance": distance,
+            "slug": restaurant['id'],
+        })
+    
+    result_list.sort(key=lambda x: x['distance'])
+    if request.user.profile.user_type == "Owner":
+        owner = True
+    else:
+        owner = False
+   
+    return JsonResponse({'restaurants': result_list, 'owner': owner})
+
 
 
 #Take a restaurant name and remove it from the favorites of the current user

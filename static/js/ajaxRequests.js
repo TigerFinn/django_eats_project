@@ -34,10 +34,27 @@ function searchRestaurants() {
     else{
         var amendURL = "djangoeats/"
     }
-
+    
     const stringURL = amendURL + "search/?name=" + nameQuery + "&address=" + addressQuery + "&cuisine=" + cuisineQuery;
+    console.log("Generated URL:", stringURL); 
     ajaxGetRequest(stringURL, displayCallBack)
 }
+
+function searchNearby() {
+    const userLat = document.getElementById('user-latitude').value;
+    const userLon = document.getElementById('user-longitude').value;
+
+   
+    if (document.URL.includes("djangoeats/")) {
+        amendURL = "";
+    } else {
+        amendURL = "djangoeats/";
+    }
+    const stringURL = amendURL + "search_nearby/?lat=" + userLat + "&lon=" + userLon;
+    ajaxGetRequest(stringURL, displayCallBack);
+}
+
+
 
 
 function displayCallBack(response) {
