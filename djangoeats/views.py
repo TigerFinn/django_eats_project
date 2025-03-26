@@ -223,14 +223,8 @@ def search(request):
         result_list = query_restaurants([nameQuery,addressQuery,cuisineQuery])
     else:
         result_list = list(Restaurant.objects.values())
-    if request.user.profile.user_type == "Owner":
-        owner = True
-    else:
-        owner = False
 
-    # result_list = JsonResponse({'restaurants':result_list})
-    # print(result_list['restaurants'])
-    return JsonResponse({'restaurants':result_list, 'owner':owner})
+    return JsonResponse({'restaurants':result_list})
 
 
 #Take a restaurant name and remove it from the favorites of the current user
