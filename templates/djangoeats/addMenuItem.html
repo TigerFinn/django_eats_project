@@ -5,24 +5,23 @@
 {% endblock %}
 
 {% block body_block %}
-    <div>
+    <h1 class="page-title">Add a Menu Item to {{ restaurant.name }}</h1>
+    <div class="menu-form-container">
         <form id="add_menu_Item_form" method="post" action="{% url 'djangoeats:add_menu_item' restaurant.slug %}">
             {% csrf_token %}
             {% for field in form.visible_fields %}
-                {{ field.errors }}
-                {{ field.help_text }}
-                {{ field }}
+                <div class="form-group">
+                    {{ field.label_tag }}
+                    {{ field.errors }}
+                    {{ field.help_text }}
+                    {{ field }}
+                </div>
             {% endfor %}
-            <input type="submit" name="submit" value="Add Menu Item" />
+
+            <button type="submit" class="btn primary full-width-btn">Add Menu Item</button> 
         </form>
     </div>
-    <div id="nav_Buttons">
-        <a href="{% url 'djangoeats:restaurant_detail' restaurant.slug%}">
-            <button>Return to Restaurant page</button>
-        </a>
-
-        <a href="{% url 'djangoeats:dashboard' %}">
-            <button>dashboard</button>
-        </a>
+    <div class="nav-btns">
+        <a href="{% url 'djangoeats:restaurant_detail' restaurant.slug %}" class="nav-btn-inverse">Return to Restaurant</a>
     </div>
 {% endblock %}
