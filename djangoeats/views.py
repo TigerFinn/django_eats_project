@@ -29,6 +29,10 @@ def home(request):
 
 #Login
 def login_view(request):
+
+    if UserLoggedIn(request):
+        return redirect('djangoeats:home')
+
     if request.method == 'POST':
         username = request.POST.get('username','')
         password = request.POST.get('password','')
@@ -78,6 +82,10 @@ def logout_view(request):
 
 
 def register(request):
+
+    if UserLoggedIn(request):
+        return redirect('djangoeats:home')
+
     if request.method == 'POST':
         user_form = UserForm(request.POST)
         profile_form = ProfileForm(request.POST, request.FILES)
@@ -108,7 +116,7 @@ def register(request):
 
 @login_required
 def make_review(request,restaurant_slug):
-    if request.user.profile.user_type != 'Customer':
+    if request.user.profile.user_type.lower() != 'customer':
         return redirect(reverse('djangoeats:restaurant_detail',kwargs={'restaurant_slug':restaurant_slug}))
     try:
         restaurant = Restaurant.objects.get(slug=restaurant_slug)
@@ -182,7 +190,6 @@ def registerRestaurant(request):
     if form.is_valid():
             restaurant = form.save(commit=False)
             restaurant.owner = request.user
-            restaurant.slug = slugify(restaurant.name)
             restaurant.latitude = form.cleaned_data.get('latitude') 
             restaurant.longitude = form.cleaned_data.get('longitude')  
             restaurant.save()

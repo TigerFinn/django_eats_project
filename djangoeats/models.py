@@ -1,6 +1,8 @@
 import json
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils.text import slugify
+
 
 class Restaurant(models.Model):
     NAME_MAX_LENGTH = 100
@@ -19,6 +21,10 @@ class Restaurant(models.Model):
     image = models.ImageField(upload_to='restaurant_images/', blank=True)
     latitude = models.DecimalField(max_digits=30, decimal_places=15, null=True, blank=True)
     longitude = models.DecimalField(max_digits=30, decimal_places=15, null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(Restaurant,self).save(*args,**kwargs)
 
 
     def __str__(self):
