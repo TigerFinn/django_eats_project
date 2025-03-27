@@ -11,6 +11,7 @@ from djangoeats.models import Review
 from django.urls import reverse
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium.webdriver.firefox.webdriver import WebDriver
+import populate_djangoeats 
 
 # Create your tests here.
 
@@ -495,6 +496,17 @@ class HomeviewTests(TestCase):
         self.assertEqual(len(response.context['restaurants']) , 2)
         self.assertContains(response,"Cooked Food Store")
         self.assertContains(response,"Food Store")
+
+class PopulateDjangoEatsScriptTest(TestCase):
+    def test_population_script(self):
+        populate_djangoeats.main()
+
+        self.assertTrue(User.objects.exists())
+        self.assertTrue(Profile.objects.exists())
+        self.assertTrue(Restaurant.objects.exists())
+        self.assertTrue(MenuItem.objects.exists())
+        self.assertTrue(Review.objects.exists())
+
 
 def create_customer():
     return create_profile("customer1","customer1@letter.com","customer",36.8926,-121.4849).user

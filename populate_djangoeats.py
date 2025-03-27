@@ -142,6 +142,9 @@ def add_review(user, restaurant, description, rating):
     r.save()
     return r
 
+def main():
+    populate()
+
 if __name__ == "__main__":
     print("Starting djangoeats population script...")
     populate()
