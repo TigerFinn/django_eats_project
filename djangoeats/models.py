@@ -61,13 +61,6 @@ class MenuItem(models.Model):
     def __str__(self):
         return f"{self.name} - {self.restaurant.name}"
 
-
-# class UserFavorites(models.Model):
-#     user = models.OneToOneField(User, on_delete=models.CASCADE)
-#     favorite_restaurants = models.ManyToManyField(Restaurant, related_name='favorited_by', blank=True)
-
-#     def __str__(self):
-#         return self.user.username
     
 
 class Review(models.Model):

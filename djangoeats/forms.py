@@ -10,14 +10,13 @@ RATING_CHOICES = [(i, str(i)) for i in range(1, 6)]
 class UserForm(forms.ModelForm):
      password = forms.CharField(widget=forms.PasswordInput())
     
-
      class Meta:
           model = User
           fields= ['username','email','password'] 
 
 class ProfileForm(forms.ModelForm):
-    latitude = forms.DecimalField(required=False, widget=forms.HiddenInput())
-    longitude = forms.DecimalField(required=False, widget=forms.HiddenInput())
+    latitude = forms.DecimalField(required=True, widget=forms.HiddenInput())
+    longitude = forms.DecimalField(required=True, widget=forms.HiddenInput(),error_messages={'required':'Please choose a location so you can search for nearby!'})
     user_type = forms.ChoiceField(choices=Profile.USER_TYPE_CHOICES)
 
     class Meta:
@@ -62,8 +61,8 @@ class RestaurantForm(forms.ModelForm):
      phone = forms.CharField(max_length=Restaurant.PHONE_MAX_LENGTH,widget=forms.TextInput(attrs={'placeholder': 'Please enter your restaurant’s phone number'}),help_text='phone')
      image = forms.ImageField(required=False, help_text="Upload an image for your restaurant")
      slug = forms.CharField(widget=forms.HiddenInput(), required=False)
-     latitude = forms.DecimalField(required=False, widget=forms.HiddenInput())
-     longitude = forms.DecimalField(required=False, widget=forms.HiddenInput())
+     latitude = forms.DecimalField(required=True, widget=forms.HiddenInput())
+     longitude = forms.DecimalField(required=True, widget=forms.HiddenInput(),error_messages={'required':'Please select a location for your restaurant!'})
 
 
      class Meta:
