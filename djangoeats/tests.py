@@ -10,8 +10,8 @@ from djangoeats.models import MenuItem
 from djangoeats.models import Review
 from django.urls import reverse
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
-from selenium.webdriver.firefox.webdriver import WebDriver
-import populate_djangoeats 
+from selenium.webdriver.firefox.webdriver import WebDriverz
+import population_script 
 
 # Create your tests here.
 
@@ -499,7 +499,7 @@ class HomeviewTests(TestCase):
 
 class PopulateDjangoEatsScriptTest(TestCase):
     def test_population_script(self):
-        populate_djangoeats.main()
+        population_script.main()
 
         self.assertTrue(User.objects.exists())
         self.assertTrue(Profile.objects.exists())
