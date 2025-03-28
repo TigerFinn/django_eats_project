@@ -450,20 +450,6 @@ class RemoveDashboardFavouriteViewTest(TestCase):
         self.assertEqual(len(response_data['restaurants']), 1)
         remaining_slugs = [r['slug'] for r in response_data['restaurants']]
         self.assertNotIn(self.restaurant1.slug, remaining_slugs)
-        
-class AddFavoriteTest(TestCase):
-    @classmethod
-    def setUpClass(cls):
-        super().setUpClass()
-        customer = create_customer()
-        owner = create_owner()
-
-        restaurant1 = create_restaurant(owner,"Cooked Food Store","Indian","23 Lebron street", "weare@LebronStreet.com", 74156789120 ,37.8921,-122.4837)
-        restaurant = create_restaurant(owner,"Food Store","Italian","26 Lebron street", "wearealso@LebronStreet.com", 74156789120 ,37.8921,-122.4837)
-
-        add_user_favourite(customer,restaurant1)
-
-        cls.restaurant = restaurant
 
 
 class HomeviewTests(TestCase):
