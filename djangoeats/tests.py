@@ -26,7 +26,6 @@ class RestaurantViewTests(TestCase):
     def setUpTestData(cls):
         user_profile = create_profile("owner1","owner1@letter.com","owner",37.8926,-122.4849)
         restaurant = create_restaurant(user_profile.user,"Cooked Food Store","Indian","23 Lebron street", "weare@LebronStreet.com", 74156789120 ,37.8921,-122.4837)
-        #Didnt Work when I put owner with a lower case o , so might want to fix that
         cls.user = user_profile.user
         cls.restaurant = restaurant
 
@@ -163,12 +162,6 @@ class RegisterRestaurantViewTests(TestCase):
 
         self.assertEqual(response.status_code , 302)
         self.assertRedirects(response,reverse('djangoeats:home'))
-
-    #def test_anonymous_redirected_to_home(self):
-    #   response = self.client.get(reverse('djangoeats:register_restaurant'))
-
- #        self.assertEqual(response.status_code , 302)
- #       self.assertRedirects(response,reverse('djangoeats:login_view'))
 
 
     def test_owner_redirected_to_form(self):
