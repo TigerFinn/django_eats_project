@@ -227,6 +227,7 @@ def search_nearby(request):
     #For each restaurant find distance from user
     for restaurant in restaurants:
         distance = haversine(float(user_latitude), float(user_longitude), float(restaurant['latitude']), float(restaurant['longitude']))
+        # print(restaurant)
         result_list.append({
             "name": restaurant['name'],
             "address": restaurant['address'],
@@ -234,7 +235,7 @@ def search_nearby(request):
             "latitude": restaurant['latitude'],
             "longitude": restaurant['longitude'],
             "distance": distance,
-            "slug": restaurant['id'],
+            "slug": restaurant['slug'],
         })
     
     #Sort list by distance of restaurant
