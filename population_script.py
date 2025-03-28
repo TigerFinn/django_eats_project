@@ -8,7 +8,12 @@ from djangoeats.models import Profile, Restaurant, MenuItem, Review
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
 
+#Welcome to the population script
+#This initiates 4 users (all with password as '1234', 2 customers 2 owners)
+#3 restaurants with full menus of mildly delicious food
+#Sets users to have various favourite restaurants and creates some reviews
 
+#Main script
 def populate():
     users = [
         {'type':"Customer",'username':"A_Customer",'email':"A_Person@place.com",'lat':55.8731, 'lon':-4.2923},
@@ -68,8 +73,9 @@ def populate():
         {'name':"Tea and Coffee",'description':"If you can't choose which, have both in one :)",'price':1.50,'type':"drink"},
     ]
 
+    #Used for linking each menu to each restaurant in loop instead of doing each individually
     restaurant_menus = []
-    rests = {
+    restaurant_menu_items = {
         'Good Food Place':goodFoodPlaceMenuItems,
         'Better Food Place':betterFoodPlaceMenuItems,
         'FoodMadeHere':foodMadeHereMenuItems,
@@ -81,13 +87,14 @@ def populate():
 
     for r in restaurants:
         owner = User.objects.get(username = r['owner'])
-        restaurant = add_restaurant(owner, r['name'], r['cuisine'],r['address'],r['email'], r['phone'], r['lat'], r['lon'])
+        restaurant = add_restaurant(owner, r)
         restaurant_menus.append(restaurant)
         print(restaurant.name + ".... created")
 
+    #Uses the slightly janky list and dictionary from before to work
     for rm in restaurant_menus:
-        for item in rests[rm.name]:
-            add_menu_item(rm, item['name'], item['description'], item['price'], item['type'])
+        for item in restaurant_menu_items[rm.name]:
+            add_menu_item(rm, item)
         print(rm.name + ".... menu created")
 
 
@@ -102,13 +109,17 @@ def populate():
     
     for r in reviews:
         add_review(User.objects.get(username = r['user']), Restaurant.objects.get(name = r['restaurant']), r['description'],r['rating'])
+    print("Restaurants reviewed...")
 
     for f in favourites:
         add_user_favourite(User.objects.get(username = f['user']), Restaurant.objects.get(name = f['restaurant']))
+    print("Restaurants favourited...")
+    print("Your DB has been successfully populated :) ")
 
 
+##HELPER FUNCTIONS##
 
-
+#Creates user and associated djangoeats profile with default password of '1234'
 def add_profile(u):
     user =  User.objects.get_or_create(username = u['username'], email = u['email'])[0]
     user.set_password("1234")
@@ -117,18 +128,21 @@ def add_profile(u):
     p.save()
     return p
 
-def add_restaurant(owner,name,cuisine,address,email,phone,lat,lon):
-    r = Restaurant.objects.get_or_create(owner = owner, name = name, cuisine = cuisine, address = address, email = email, phone = phone,latitude=lat,longitude=lon)[0]
+#Creates restaurants with a slugified name
+def add_restaurant(owner,r):
+    name = r['name']
+    r = Restaurant.objects.get_or_create(owner = owner, name = r['name'],cuisine =  r['cuisine'], address = r['address'], email = r['email'], phone= r['phone'],latitude= r['lat'], longitude=r['lon'])[0]
     r.slug = slugify(name)
-    r.menu = ""
     r.save()
     return r
 
-def add_menu_item(restaurant, name, description, price, type):
-    m = MenuItem.objects.get_or_create(restaurant = restaurant, name = name, description = description, price = price, type = type)[0]
+#Does what it says
+def add_menu_item(restaurant, item):
+    m = MenuItem.objects.get_or_create(restaurant =restaurant, name = item['name'], description = item['description'], price = item['price'], type= item['type'])[0]
     m.save()
     return m
 
+#Add a restaurant to a user's favourites list
 def add_user_favourite(user, restaurant):
     p = Profile.objects.get_or_create(user=user)[0]
     p.favorite_restaurants.add(restaurant)
@@ -136,15 +150,13 @@ def add_user_favourite(user, restaurant):
 
     return user
 
+#Does what it says
 def add_review(user, restaurant, description, rating):
     r = Review.objects.get_or_create(reviewer = user, restaurant = restaurant, comment =  description, rating = rating)[0]
-
     r.save()
     return r
 
-def main():
-    populate()
-
+#Allows it to be run from command line
 if __name__ == "__main__":
     print("Starting djangoeats population script...")
     populate()

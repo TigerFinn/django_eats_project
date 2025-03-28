@@ -3,15 +3,17 @@
 {% load static %}
 
 {% block title_block %}
-    <strong>{{ restaurant.name }}</strong>
+    {{ restaurant.name }}
 {% endblock %}
 
+<!-- Display all the relevant details of a restaurant -->
 {% block body_block %}
 
     <div class="restaurant-details-container">
 
         <h1>{{ restaurant.name }}</h1>
 
+        <!-- Basic details -->
         <div id="restaurant_details">
                 <p>Owner : {{ restaurant.owner }}</p>
                 <p>Cuisine : {{ restaurant.cuisine }}</p>
@@ -20,10 +22,12 @@
                 <p>Email : {{ restaurant.email }}</p>
         </div>
 
+        
         <div class="restaurant-actions">
 
             <a href="{% url 'djangoeats:home' %}" class="btn">Return Home</a>
 
+            <!-- Show review and favourite buttons to customer users. Swap what button shows to add or remove the favourite -->
             {% if user.is_authenticated %}
                 {% if not is_owner %}
                     <a href="{% url 'djangoeats:make_review' restaurant.slug %}" class="btn">Make your Review</a>
@@ -47,6 +51,7 @@
 
         <hr>
 
+        <!-- Display all reviews -->
         <div id="Reviews">
             <h2>Reviews</h2>
 
@@ -66,6 +71,7 @@
             {% endif %}
         </div>  
 
+        <!-- Display all menu items -->
         <div id="Menu_items">
             <h2>Menu Item</h2>
 

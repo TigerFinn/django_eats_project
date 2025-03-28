@@ -1,5 +1,8 @@
 <!DOCTYPE html>
 
+<!-- This search form is separated from the pages that used it so it can be reused across the web app -->
+ <!-- as of deployment on 27/03/2025 it is only used in one place, but it allows scope for expansion -->
+
 {% load static %}
 <div class="search-container">
     <form id="search-form">
@@ -8,15 +11,17 @@
         <input type="text" id="search-address-input" placeholder="Address..." />
         <input type="text" id="search-cuisine-input" placeholder="Cuisine..." />
         <input type="button" id="search-button" value="Search" onclick="searchRestaurants()" />
+        <input type="button" id="search-button" value="Reset" onclick="clearSearch()" />
 
 
+        <!-- Deploy ability to order restaurants by geographical location compared to the user -->
         {% if user.is_authenticated %}
         <input type="hidden" id="user-latitude" value="{{ request.user.profile.latitude }}">
         <input type="hidden" id="user-longitude" value="{{ request.user.profile.longitude }}">
-        <input type="button" id="search-nearby-btn" value="Search by Nearby" onclick="searchNearby()" />
+        <input type="button" class="btn" value="Search by Nearby" onclick="searchNearby()" />
         {% else %}
         <a href = "{% url 'djangoeats:login_view' %}">
-        <input type = "button" id="login-to-search-nearby-btn" value="Login to find restaurants nearby!"></input>
+        <input type = "button" class="btn" value="Login to find restaurants nearby!"></input>
         </a>
         {% endif %}
     </form>

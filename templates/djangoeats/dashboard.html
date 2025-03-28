@@ -1,28 +1,28 @@
 <!DOCTYPE html>
-{% extends 'djangoeats/restaurantDisplayBase.html' %}
+{% extends 'djangoeats/restaurant_display_base.html' %}
 {% load static %}
 
-{% block title_block %}Dashboard{% endblock %}
+{% block title_block %}
+    Dashboard
+{% endblock %}
 
-
+<!-- Pre-ramble welcome to dashboard and inclusion of button to add new restaurants -->
 {% block pre_scroll_body_block %}
     <div class="hero-section">
         <h1>Find & Review the Best Restaurants Near You!</h1>
         <p>THIS IS THE DASHBOARD</p>
-
-        <!-- {% include 'djangoeats/searchForm.html' %} -->
-        </div>
-        
+        <h2>{{ title }}</h2>
+    </div>
         
     {% if user.is_authenticated and user.profile.user_type|lower == "owner" %}
         <div class="centered-button-container">
             <a href="{% url 'djangoeats:register_restaurant' %}" class="nav-btn-inverse">Register Your Restaurant</a>
         </div>        
-        
     {% endif %}
 {% endblock %}
 
-<!-- Additional buttons to be within the restaurants displayed on the dashboard -->
+
+<!-- Additional buttons to be within the restaurants displayed on the dashboard. Functions to remove from favourites as a customer, or update restaurant menu as an owner-->
 {% block restaurant_action_block %}
     {% if user.profile.user_type|lower == "owner" %}
         <a href="{% url 'djangoeats:add_menu_item' restaurant.slug %}">Add menu item</a>

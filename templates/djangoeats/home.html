@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-{% extends 'djangoeats/restaurantDisplayBase.html' %}
+{% extends 'djangoeats/restaurant_display_base.html' %}
 {% load static %}
 
 
@@ -7,9 +7,7 @@
     Home
 {% endblock %}
 
-
-
-
+<!-- Home is a simple page which displays all restaurants and gives the ability to search for them using our custom search features -->
 {% block pre_scroll_body_block %}
     <div class="hero-section">
         <h1>Welcome to DjangoEats</h1>
@@ -19,7 +17,7 @@
     <h1>Restaurants</h1>
     <p class="'subtitle"> Check out best places to eat.</p>
     
-
+<!-- Imports search html -->
     {% include 'djangoeats/searchForm.html' %}
     
 {% endblock %}

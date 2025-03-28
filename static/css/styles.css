@@ -17,13 +17,13 @@ body {
     margin-bottom: 20px;
 }
 
+
 .hero-section input[type="text"] {
     padding: 10px;
     width: 300px;
     border-radius: 5px;
     border: none;
 }
-
 
 .hero-section button, .cta-button {
     padding: 10px 20px;
@@ -65,14 +65,12 @@ body {
     margin-right: auto;
 }
 
-
 .nav-title {
     color: white;
     font-size: 22px;
     font-weight: bold;
     margin-left: 8px;
 }
-
 
 .nav-btn {
     padding: 8px 15px;
@@ -117,7 +115,6 @@ body {
     margin: 0;
 }
 
-
 .restaurant-card:hover {
     transform: scale(1.05);
 }
@@ -131,7 +128,6 @@ body {
     align-items: center;
     text-align: center;
 }
-
 
 /* restaurant images */
 .restaurant-card img {
@@ -229,8 +225,6 @@ footer {
     color: white;
 }
 
-
-
 .auth-container {
     max-width: 400px;
     margin: 100px auto;
@@ -263,7 +257,6 @@ footer {
     margin-bottom: 5px;
 }
 
-
 .input-group input,
 .input-group select {
     width: 100%;
@@ -283,7 +276,6 @@ footer {
     font-size: 16px;
     margin-top: 15px;
 }
-
 
 .auth-button:hover {
     background: #0056b3;
@@ -345,7 +337,6 @@ footer {
     margin-bottom: 30px;
 }
 
-
 .empty-message {
     text-align: center;
     font-size: 18px;
@@ -365,13 +356,11 @@ footer {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-
 .restaurant-details-container h1 {
     text-align: center;
     font-size: 32px;
     margin-bottom: 20px;
 }
-
 
 .restaurant-info p {
     margin: 8px 0;
@@ -399,7 +388,6 @@ footer {
 
 }
 
-
 .btn:hover{
     background-color: #0056b3;
 }
@@ -407,7 +395,6 @@ footer {
 .btn.danger {
     background-color: #dc3545;
 }
-
 
 .btn.danger:hover{
     background-color: #a71d2a;
@@ -431,7 +418,6 @@ footer {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5); 
 
 }
-
 
 .review-body{
     font-style: italic;
@@ -487,7 +473,6 @@ footer {
     margin-bottom: 5px;
 }
 
-
 .menu-price{
     font-weight: bold;
     color: #28a745;
@@ -527,7 +512,6 @@ footer {
     margin-top: 20px;
 }
 
-
 .form-group{
     margin-bottom: 20px;
 }
@@ -557,7 +541,6 @@ footer {
     font-size: 14px;
 
 }
-
 
 .error {
     font-size: 0.9em;
@@ -602,7 +585,6 @@ footer {
     background-color: #ccc;
 }
 
-
 #id_rating {
     padding: 10px;
     border-radius: 6px;
@@ -610,7 +592,6 @@ footer {
     border: 1px solid #ccc;
     font-size: 14px;
 }
-
 
 #id_body {
     padding: 10px;
@@ -689,12 +670,9 @@ footer {
 
 }
 
-
-
 .file-upload input[type="file"] {
     display: none;
 }
-
 
 .custom-label {
     font-size: 14px;
@@ -751,7 +729,6 @@ footer {
 
 
 }
-
 
 .full-width-btn {
     width: 100%;

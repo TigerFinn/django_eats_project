@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 {% load static %}
 
+<!-- The base template for all pages -->
 <html>
     <head lang="en">
         <meta charset = "UTF-8" />
@@ -12,10 +13,11 @@
 
         <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
         <link rel="icon" href="{% static 'images/logo.png' %}">
-        <script src = "{% static 'js/ajaxRequests.js' %}"></script>
+        <script src = "{% static 'js/ajax_requests.js' %}"></script>
 
     </head>
     <body>
+        <!-- Navbars that will change based on user status -->
         <header class="navbar">
             <div class="nav-left">
                 <a href="{% url 'djangoeats:home' %}" class="nav-brand">
@@ -25,7 +27,6 @@
             </div>
             <div class="auth-links">
                 {% if user.is_authenticated %}
-                <!-- This needs some css -->
                     <h1>Welcome, {{user.username}}</h1>
                     <a href="{% url 'djangoeats:dashboard' %}" class="nav-btn">Dashboard</a>
                     <a href="{% url 'djangoeats:logout_view' %}" class="nav-btn">Log Out</a>
@@ -40,11 +41,13 @@
         
         <hr/>
         <main>
+            <!-- Allows pages to have content -->
             <div class = 'body'>
                 {% block body_block %}
                 {% endblock %}
             </div>
 
+            <!-- Snazzy footer -->
             <footer>
                 <p>&copy; 2025 DjangoEats. All rights reserved.</p>
             </footer>

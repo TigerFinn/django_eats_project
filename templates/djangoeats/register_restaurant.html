@@ -6,13 +6,16 @@
     Add a restaurant
 {% endblock %}
 
+<!-- Register a restaurant -->
 {% block body_block %}
+    <h1 class="page-title">Register Your Restaurant</h1>
     <div class="restaurant-form-container">
         <form id="register_Restaurant_form" method="post" action="{% url 'djangoeats:register_restaurant' %}">
             {% csrf_token %}
             {% for hidden in form.hidden_fields %}
                 {{ hidden }}
             {% endfor %}
+            <!-- Loads the fields of the form -->
             {% for field in form.visible_fields %}
             {% if field.name == "image" %}
                 <div class="form-group file-upload">
@@ -32,15 +35,19 @@
             {% endif %}
 {% endfor %}
             <br>
-            
+            <h3>You can add items to the menu from the dashboard!</h3>
+            <!-- Define the map feature; hidden inputs take values from the google maps api -->
+            <div id="map" style="height: 300px; width: 100%;"></div>
             <input type="hidden" id="latitude" name="latitude">
             <input type="hidden" id="longitude" name="longitude">
-            <input type="submit" name="submit" value="Add Restaurant" />
+            <br>
+            <input type="submit" class = "btn" name="submit" value="Add Restaurant" />
         </form>
     </div>
 
     <div id="map" style="height: 400px; width: 100%;"></div>
 
+    <!-- Gets the google maps API that allows restaurants to be found based on their geographical location -->
    
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAqZDKn4Elrg5ipAG22DDnLM2hjCLwBQ-A&libraries=places&callback=initMap" async defer></script>
 

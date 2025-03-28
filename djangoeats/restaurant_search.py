@@ -9,13 +9,14 @@ def query_restaurants(search_terms):
     address = search_terms[1]
     cuisine = search_terms[2]
 
+    #Find all restaurants that match the given search terms
     for restaurant in restaurants:
         if (basicSearch(restaurant['name'],name) and basicSearch(restaurant['address'],address) and basicSearch(restaurant['cuisine'], cuisine)):
             results.append(restaurant)
 
     return results
 
-
+#Basic substring check. Returns true if search is a substring of the item
 def basicSearch(string, searchTerm):
     if searchTerm.lower().strip() in string.lower().strip():
         return True

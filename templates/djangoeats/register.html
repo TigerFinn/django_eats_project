@@ -1,8 +1,11 @@
 {% extends 'djangoeats/base.html' %}
 {% load static %}
 
-{% block title_block %}Register | DjangoEats{% endblock %}
+{% block title_block %}
+    Register
+{% endblock %}
 
+<!-- It's an input form. Does what it should -->
 {% block body_block %}
     <div class="auth-container">
         <h1>Join DjangoEats!</h1>
@@ -32,7 +35,8 @@
 
             <div class="input-group">
                 <label>Location</label>
-                <div id="map" style="height: 300px; width: 100%;"></div>
+            <!-- Define the map feature; hidden inputs take values from the google maps api -->
+            <div id="map" style="height: 300px; width: 100%;"></div>
                 <input type="hidden" id="latitude" name="latitude">
                 <input type="hidden" id="longitude" name="longitude">
             </div>
@@ -43,6 +47,7 @@
         <p>Already have an account? <a href="{% url 'djangoeats:login_view' %}">Log In</a></p>
     </div>
 
+    <!-- Gets the google maps API that allows restaurants to be found based on their geographical location -->
     
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAqZDKn4Elrg5ipAG22DDnLM2hjCLwBQ-A&libraries=places&callback=initMap" async defer></script>
 

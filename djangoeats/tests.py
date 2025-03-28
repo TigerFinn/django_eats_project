@@ -1,6 +1,4 @@
-from django.test import TestCase
 
-# Create your tests here.
 
 from django.test import TestCase
 from djangoeats.models import Restaurant
@@ -10,7 +8,6 @@ from djangoeats.models import MenuItem
 from djangoeats.models import Review
 from django.urls import reverse
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
-from selenium.webdriver.firefox.webdriver import WebDriverz
 import population_script 
 
 # Create your tests here.

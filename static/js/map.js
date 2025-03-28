@@ -1,6 +1,8 @@
 var map;
 var marker;
 
+//Interactive google api map.
+//Initiaties map and marker in the centre of Glasgow, and allows the user to drag the marker around to choose a location
 function initMap() {
     var defaultLocation = { lat: 55.86, lng: -4.25 };
 

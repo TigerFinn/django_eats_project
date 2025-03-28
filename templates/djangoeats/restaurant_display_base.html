@@ -2,11 +2,15 @@
 {% extends 'djangoeats/base.html' %}
 {% load static %}
 
+<!-- This template is used for all pages that will dynamically display a list of restaurants -->
+
 {% block body_block %}
+    <!-- Define pre and post display blocks that give pages extending this freedom to do whatever -->
     {% block pre_scroll_body_block %}
     {% endblock %}
 
 
+    <!-- Display the restaurants -->
     <div id="restaurant-list">
         {% for restaurant in restaurants %}
             <div class="restaurant-card">

@@ -13,14 +13,10 @@ from djangoeats.forms import RestaurantForm
 from django.utils.text import slugify
 from djangoeats.forms import MenuItemForm, UserForm, ProfileForm
 
-import json
 from django.http import JsonResponse
 
 from djangoeats.restaurant_search import basicSearch, query_restaurants
 from .haversine import haversine
-
-
-# Create your views here.
 
 
 def home(request):
@@ -29,10 +25,10 @@ def home(request):
 
 #Login
 def login_view(request):
-
     if UserLoggedIn(request):
         return redirect('djangoeats:home')
 
+    #Get user form submission and log in or throw error
     if request.method == 'POST':
         username = request.POST.get('username','')
         password = request.POST.get('password','')
@@ -44,11 +40,19 @@ def login_view(request):
             return render(request, 'djangoeats/login.html', {'error': 'Invalid Username or Password'})
     return render(request, 'djangoeats/login.html')
 
+def logout_view(request):
+    username = UserLoggedIn(request)
+    if username != None:
+        logout(request)
+    return redirect('djangoeats:home')
 
 
+#Handle display of restaurant
 def restaurant_detail(request, restaurant_slug):
+    #Get relevant info
     restaurant = get_object_or_404(Restaurant, slug=restaurant_slug)
     menu_items = MenuItem.objects.filter(restaurant=restaurant)
+    #Required for which buttons need displayed
     if request.user.is_authenticated:
         is_owner = (request.user.profile.user_type.lower() == 'owner')
     else:
@@ -65,22 +69,7 @@ def restaurant_detail(request, restaurant_slug):
 
     return render(request, 'djangoeats/restaurant.html', context=context_dict)
 
-
-
-def UserLoggedIn(request):
-    if request.user.is_authenticated == True:
-        username = request.user.username
-    else:
-        username = None
-    return username
-
-def logout_view(request):
-    username = UserLoggedIn(request)
-    if username != None:
-        logout(request)
-    return redirect('djangoeats:home')
-
-
+#Get user registration and create the profile
 def register(request):
 
     if UserLoggedIn(request):
@@ -113,9 +102,10 @@ def register(request):
     
     return render(request, 'djangoeats/register.html', {'user_form': user_form, 'profile_form': profile_form})
 
-
+#Post a review to a web page
 @login_required
 def make_review(request,restaurant_slug):
+    #As per the spec, only customer type users can make reviews
     if request.user.profile.user_type.lower() != 'customer':
         return redirect(reverse('djangoeats:restaurant_detail',kwargs={'restaurant_slug':restaurant_slug}))
     try:
@@ -144,12 +134,11 @@ def make_review(request,restaurant_slug):
             print(form.errors)
             
     context_dict = {'form': form, 'restaurant': restaurant}
-    return render(request, 'djangoeats/makeReview.html', context=context_dict)
+    return render(request, 'djangoeats/make_review.html', context=context_dict)
 
-
+#User dashboard, send a different message based on owner or customer types
 @login_required
 def dashboard(request):
-    # profile = Profile.objects.get(user=request.user)
     if not request.user.is_authenticated:
         return redirect('djangoeats:home') # go to home page.
 
@@ -160,13 +149,12 @@ def dashboard(request):
         restaurants = request.user.profile.favorite_restaurants.all()
         title = "Your Favorite Restaurants"
 
-
-    return render(request, 'djangoeats/dashboard.html', {'restaurants': restaurants})
-
+    return render(request, 'djangoeats/dashboard.html', {'restaurants': restaurants, 'title':title})
 
 
+#Register a new restaurant via form
 @login_required
-def registerRestaurant(request):
+def register_restaurant(request):
     # If you are not a owner cannot access this page
     if  not request.user.profile.user_type.lower() == 'owner':
         return redirect(reverse('djangoeats:home'))
@@ -185,9 +173,10 @@ def registerRestaurant(request):
             return redirect(reverse('djangoeats:dashboard'))
             
     context_dict = {'form': form}
-    return render(request, 'djangoeats/registerRestaurant.html', context=context_dict)
+    return render(request, 'djangoeats/register_restaurant.html', context=context_dict)
 
 
+#Add menu item to a given restaurant
 @login_required
 def addMenuItem(request,restaurant_slug):
 
@@ -210,27 +199,32 @@ def addMenuItem(request,restaurant_slug):
         return redirect(reverse('djangoeats:restaurant_detail',kwargs={'restaurant_slug':restaurant_slug}))
     
     context_dict = {'form':form,'restaurant':restaurant}
-    return render(request , 'djangoeats/addMenuItem.html' , context=context_dict)
+    return render(request , 'djangoeats/add_menu_item.html' , context=context_dict)
 
+#Search method used by ajax-requests.js
 def search(request):
     nameQuery = request.GET['name']
     addressQuery = request.GET['address']
     cuisineQuery = request.GET['cuisine']
+    #If there are any inputs perform a search, otherwise return all restaurants
+        #This case should be handled in ajax_requests.js, this is just a back up
     if nameQuery or addressQuery or cuisineQuery:
         result_list = query_restaurants([nameQuery,addressQuery,cuisineQuery])
     else:
         result_list = list(Restaurant.objects.values())
 
+    #Return a JsonResponse of the filtered restaurants
     return JsonResponse({'restaurants':result_list})
 
+#Order restaurants by their geographical location compared to specified user location
 def search_nearby(request):
-    
     user_latitude = float(request.GET.get('lat'))
     user_longitude = float(request.GET.get('lon'))
     restaurants = list(Restaurant.objects.values())
     
     result_list = []
 
+    #For each restaurant find distance from user
     for restaurant in restaurants:
         distance = haversine(float(user_latitude), float(user_longitude), float(restaurant['latitude']), float(restaurant['longitude']))
         result_list.append({
@@ -243,6 +237,7 @@ def search_nearby(request):
             "slug": restaurant['id'],
         })
     
+    #Sort list by distance of restaurant
     result_list.sort(key=lambda x: x['distance'])
     if request.user.profile.user_type == "Owner":
         owner = True
@@ -253,29 +248,40 @@ def search_nearby(request):
 
 
 
-#Take a restaurant name and remove it from the favorites of the current user
-def removeDashboardFavorite(request):
+#Take a restaurant name and remove it from the favorites of the current user - called by JS
+def remove_dashboard_favorite(request):
     restaurant_slug=request.GET['slug']
 
+    #Find the restaurant and remove
     for r in request.user.profile.favorite_restaurants.values():
         if r['slug'] == restaurant_slug:
             request.user.profile.favorite_restaurants.remove(Restaurant.objects.get(slug=r['slug']))
             return JsonResponse({'restaurants':list(request.user.profile.favorite_restaurants.values())})
   
-
     return JsonResponse({'restaurants':list(request.user.profile.favorite_restaurants.values())})
 
-def addFavorite(request, restaurant_slug):
+#Add restaurant to user favourite - called by JS
+def add_favorite(request, restaurant_slug):
     for r in Restaurant.objects.values():
         if r['slug'] == restaurant_slug:
             request.user.profile.favorite_restaurants.add(Restaurant.objects.get(slug=r['slug']))
             break
     return JsonResponse({'newText':"Remove from Favourites", 'function':"removeFavorite()"})
 
-def removeFavorite(request, restaurant_slug):
+#Remove restaurant from user favourite - called by JS
+def remove_favorite(request, restaurant_slug):
     for r in request.user.profile.favorite_restaurants.values():
         if r['slug'] == restaurant_slug:
             request.user.profile.favorite_restaurants.remove(Restaurant.objects.get(slug=r['slug']))
             break    
     
     return JsonResponse({'newText':"Add to Favourites", 'function':"addFavorite()"})
+
+
+#Helper method
+def UserLoggedIn(request):
+    if request.user.is_authenticated == True:
+        username = request.user.username
+    else:
+        username = None
+    return username
