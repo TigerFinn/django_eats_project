@@ -12,6 +12,7 @@
         <h1>Find & Review the Best Restaurants Near You!</h1>
         <p>THIS IS THE DASHBOARD</p>
         <h2>{{ title }}</h2>
+        <a href="{% url 'djangoeats:home' %}" class="nav-btn-inverse">Return Home</a>
     </div>
         
     {% if user.is_authenticated and user.profile.user_type|lower == "owner" %}

@@ -25,9 +25,13 @@
                     <span class="nav-title">DjangoEats</span>
                 </a>
             </div>
+            {% if user.is_authenticated %}
+            <div id="welcome-header">
+                <h2>Welcome, {{user.username}}</h2>
+            </div>
+            {% endif %}
             <div class="auth-links">
                 {% if user.is_authenticated %}
-                    <h1>Welcome, {{user.username}}</h1>
                     <a href="{% url 'djangoeats:dashboard' %}" class="nav-btn">Dashboard</a>
                     <a href="{% url 'djangoeats:logout_view' %}" class="nav-btn">Log Out</a>
                 {% else %}

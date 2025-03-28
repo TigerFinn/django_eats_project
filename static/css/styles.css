@@ -91,6 +91,12 @@ body {
     transition: 0.3s;
 }
 
+#welcome-header h2 {
+    text-align: center;
+    color: lightgrey;
+    font-weight: bold;
+}
+
 /* Restaurant List Styling */
 #restaurant-list {
     display: grid;
