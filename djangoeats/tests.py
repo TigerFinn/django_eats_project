@@ -26,7 +26,6 @@ class RestaurantViewTests(TestCase):
     def setUpTestData(cls):
         user_profile = create_profile("owner1","owner1@letter.com","owner",37.8926,-122.4849)
         restaurant = create_restaurant(user_profile.user,"Cooked Food Store","Indian","23 Lebron street", "weare@LebronStreet.com", 74156789120 ,37.8921,-122.4837)
-        #Didnt Work when I put owner with a lower case o , so might want to fix that
         cls.user = user_profile.user
         cls.restaurant = restaurant
 
@@ -163,12 +162,6 @@ class RegisterRestaurantViewTests(TestCase):
 
         self.assertEqual(response.status_code , 302)
         self.assertRedirects(response,reverse('djangoeats:home'))
-
-    #def test_anonymous_redirected_to_home(self):
-    #   response = self.client.get(reverse('djangoeats:register_restaurant'))
-
- #        self.assertEqual(response.status_code , 302)
- #       self.assertRedirects(response,reverse('djangoeats:login_view'))
 
 
     def test_owner_redirected_to_form(self):
@@ -450,20 +443,6 @@ class RemoveDashboardFavouriteViewTest(TestCase):
         self.assertEqual(len(response_data['restaurants']), 1)
         remaining_slugs = [r['slug'] for r in response_data['restaurants']]
         self.assertNotIn(self.restaurant1.slug, remaining_slugs)
-        
-class AddFavoriteTest(TestCase):
-    @classmethod
-    def setUpClass(cls):
-        super().setUpClass()
-        customer = create_customer()
-        owner = create_owner()
-
-        restaurant1 = create_restaurant(owner,"Cooked Food Store","Indian","23 Lebron street", "weare@LebronStreet.com", 74156789120 ,37.8921,-122.4837)
-        restaurant = create_restaurant(owner,"Food Store","Italian","26 Lebron street", "wearealso@LebronStreet.com", 74156789120 ,37.8921,-122.4837)
-
-        add_user_favourite(customer,restaurant1)
-
-        cls.restaurant = restaurant
 
 
 class HomeviewTests(TestCase):
